@@ -225,6 +225,35 @@ public final class ShipDesign extends Design {
     public boolean isBomber()      { return (mission() == BOMBER); }
     public boolean isDestroyer()   { return (mission() == DESTROYER); }
 
+    public int inferredMission() {
+        if (hasColonySpecial())
+            return COLONY;
+        int bombSlots = 0;
+        int shipWeaponSlots = 0;
+        int totalWeaponSlots = 0;
+        for (int i = 0; i < maxWeapons(); i++) {
+            if (wpnCount(i) > 0 && weapon(i) != null && !weapon(i).noWeapon()) {
+                totalWeaponSlots++;
+                if (weapon(i).groundAttacksOnly())
+                    bombSlots++;
+                else if (weapon(i).canAttackShips())
+                    shipWeaponSlots++;
+            }
+        }
+        // scout: has scanner and at most 1 weapon
+        if (allowsScanning() && totalWeaponSlots <= 1)
+            return SCOUT;
+        // bomber: ground-attack weapons outnumber ship weapons
+        if (bombSlots > 0 && bombSlots > shipWeaponSlots)
+            return BOMBER;
+        if (shipWeaponSlots > 0) {
+            if (size >= LARGE)
+                return DESTROYER;
+            return FIGHTER;
+        }
+        return SCOUT;
+    }
+
     public void clearEmptyWeapons() {
         for (int i=0;i<wpnCount.length;i++) {
             if (wpnCount[i] == 0)
