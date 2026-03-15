@@ -627,10 +627,26 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
     @Override public float travelSpeed() { return slowestStackSpeed(); }
 	@Override public float speedInNebulae()	{ return empire().speedInNebulae(); }
 	public String speedInNebulaeStr()	{ return empire().speedInNebulaeStr(); }
-	public int slowestStackBaseSpeed()	{
+	// Returns the design with the lowest warp speed in this fleet
+	public ShipDesign slowestDesign() {
+		ShipDesign slowest = null;
+		float minSpeed = Float.MAX_VALUE;
+		for (int i = 0; i < MAX_DESIGNS; i++) {
+			if (num(i) > 0) {
+				ShipDesign des = design(i);
+				if (des != null && des.engine().warp() < minSpeed) {
+					minSpeed = des.engine().warp();
+					slowest = des;
+				}
+			}
+		}
+		return slowest;
+	}
+	public int slowestStackBaseSpeed() {
+		// Uses baseWarp which may differ in ordering from warp()
 		int maxBaseSpeed = Integer.MAX_VALUE;
-		for (int i=0; i<MAX_DESIGNS; i++) {
-			if (num(i)>0) {
+		for (int i = 0; i < MAX_DESIGNS; i++) {
+			if (num(i) > 0) {
 				ShipDesign des = design(i);
 				if (des != null)
 					maxBaseSpeed = min(maxBaseSpeed, des.engine().baseWarp());
@@ -638,17 +654,10 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 		}
 		return maxBaseSpeed;
 	}
-    public float slowestStackSpeed() {
-        float maxSpeed = Integer.MAX_VALUE;
-        for (int i=0;i<MAX_DESIGNS;i++) {
-            if (num(i)>0) {
-                ShipDesign des = design(i);
-                if (des != null)
-                    maxSpeed = min(maxSpeed, des.engine().warp());
-            }
-        }
-        return maxSpeed;
-    }
+	public float slowestStackSpeed() {
+		ShipDesign des = slowestDesign();
+		return des != null ? des.engine().warp() : 0;
+	}
     // modnar: add firepowerAntiShip to only count weapons that can attack ships
     public float firepowerAntiShip(float shield) {
         float dmg = 0;
