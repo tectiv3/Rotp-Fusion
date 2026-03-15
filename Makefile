@@ -1,11 +1,11 @@
 TODAY   = $(shell date +%Y-%m-%d)
 VERSION = Fusion-$(TODAY)
 JAR     = target/rotp-$(VERSION).jar
-MINI    = target/rotp-$(VERSION)-mini.jar
+CPFILE  = target/classpath.txt
 
-.PHONY: build check compile run run-mini clean
+.PHONY: build check compile dev run clean
 
-# macOS build — update pom version to today's date, then build
+# macOS build — update pom version to today's date, then build full jar
 build:
 	sed -i '' 's|<version>Fusion-[0-9]*-[0-9]*-[0-9]*</version>|<version>$(VERSION)</version>|' pom.xml
 	mvn package -DskipTests -Pmac; \
@@ -18,11 +18,16 @@ check:
 compile:
 	mvn compile -q
 
+# fast dev cycle — compile only changed files, run from classes (no jar rebuild)
+dev: $(CPFILE)
+	mvn compile -q && \
+	java -cp "target/classes:$$(cat $(CPFILE))" rotp.RotpGovernor
+
+$(CPFILE):
+	mvn dependency:build-classpath -q -Dmdep.outputFile=$(CPFILE)
+
 run: $(JAR)
 	java -jar $(JAR)
-
-run-mini: $(MINI)
-	java -jar $(MINI)
 
 clean:
 	mvn clean -q
