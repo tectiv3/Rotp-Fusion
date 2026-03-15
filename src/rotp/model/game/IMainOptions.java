@@ -58,6 +58,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	String SENSITIVITY_MEDIUM	= "GAME_SETTINGS_SENSITIVITY_MEDIUM";
 	String SENSITIVITY_LOW		= "GAME_SETTINGS_SENSITIVITY_LOW";
 	String SENSITIVITY_CLICK	= "GAME_SETTINGS_SENSITIVITY_CLICK";
+	String SENSITIVITY_DWELL	= "GAME_SETTINGS_SENSITIVITY_DWELL";
 	int	   MAX_BACKUP_TURNS		= 20; // modnar: change max turns between backups to 20
 	
 	// ==================== Duplicates for Base Main Settings Options ====================
@@ -127,6 +128,7 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 			super(GAME_UI, "SENSITIVITY",
 					Arrays.asList(
 							SENSITIVITY_CLICK,
+							SENSITIVITY_DWELL,
 							SENSITIVITY_LOW,
 							SENSITIVITY_MEDIUM,
 							SENSITIVITY_HIGH

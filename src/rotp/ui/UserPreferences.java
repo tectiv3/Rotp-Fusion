@@ -111,6 +111,7 @@ public class UserPreferences implements IMainOptions {
 	public static boolean sensitivityMedium()    { return sensitivityMode.equals(SENSITIVITY_MEDIUM); }
 	public static boolean sensitivityLow()	     { return sensitivityMode.equals(SENSITIVITY_LOW); }
 	public static boolean sensitivityClickOnly() { return sensitivityMode.equals(SENSITIVITY_CLICK); }
+	public static boolean sensitivityDwell()     { return sensitivityMode.equals(SENSITIVITY_DWELL); }
 
 	private static boolean graphicLow()		{ return graphicsMode().equals(GRAPHICS_LOW); }
 	private static boolean graphicHigh()		{ return graphicsMode().equals(GRAPHICS_HIGH); }
@@ -396,6 +397,7 @@ public class UserPreferences implements IMainOptions {
 			case SENSITIVITY_MEDIUM: return "Medium";
 			case SENSITIVITY_LOW:    return "Low";
 			case SENSITIVITY_CLICK:  return "Click Only";
+			case SENSITIVITY_DWELL:  return "Dwell";
 		}
 		return "High";
 	}
@@ -405,6 +407,7 @@ public class UserPreferences implements IMainOptions {
 			case "Medium":     return SENSITIVITY_MEDIUM;
 			case "Low":        return SENSITIVITY_LOW;
 			case "Click Only": return SENSITIVITY_CLICK;
+			case "Dwell":      return SENSITIVITY_DWELL;
 		}
 		return SENSITIVITY_HIGH;
 	}
