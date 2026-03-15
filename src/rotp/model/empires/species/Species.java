@@ -317,7 +317,7 @@ public class Species implements ISpecies, Base, Serializable {
 						if (animValues.size() == 1) { // "_title or equivalent, could be empty
 							if (skillsValues.size() > 0) {
 								s1 = s1.replace(replString, skillsValues.get(0));
-								return s1;
+								continue;
 							}
 						}
 						else { // Must not be empty string
@@ -325,7 +325,7 @@ public class Species implements ISpecies, Base, Serializable {
 								String value = skillsValues.get(idx);
 								if (value != null && !value.isEmpty()) {
 									s1 = s1.replace(replString, value);
-									return s1;
+									continue;
 								}
 							}
 						}
