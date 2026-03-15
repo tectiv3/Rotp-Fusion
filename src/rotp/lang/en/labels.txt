@@ -530,6 +530,8 @@ GAME_SETTINGS_SENSITIVITY_MEDIUM_HELP | Generally enough!
 GAME_SETTINGS_SENSITIVITY_MEDIUM      | Medium
 GAME_SETTINGS_SENSITIVITY_LOW_HELP    | Slowest response with minimal CPU requirement.
 GAME_SETTINGS_SENSITIVITY_LOW         | Low
+GAME_SETTINGS_SENSITIVITY_CLICK_HELP  | No hover detection. Systems and fleets are only selected when clicked.
+GAME_SETTINGS_SENSITIVITY_CLICK       | Click Only
 GAME_SETTINGS_SENSITIVITY_DESC        | Toggle how quickly the galaxy map responds to mouse movement when updating the display panel.
 GAME_SETTINGS_MEMORY                  | Show Memory Usage: %1
 GAME_SETTINGS_MEMORY_YES              | Show
