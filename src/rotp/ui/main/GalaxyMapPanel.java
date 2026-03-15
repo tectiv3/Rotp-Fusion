@@ -1421,6 +1421,9 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         lastMouseY = y;
         lastMouseTime = System.currentTimeMillis();
 
+        // click-only mode: no hover detection at all
+        if (UserPreferences.sensitivityClickOnly())
+            return;
         if (maxMouseVelocity > 0) {
             long timeS = (lastMouseTime - prevTime);
             if (timeS == 0)
@@ -1520,6 +1523,9 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         int clicks = e.getClickCount();
         boolean rightClick = SwingUtilities.isRightMouseButton(e);
         boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
+        // in click-only mode, always detect sprite at click position
+        if (UserPreferences.sensitivityClickOnly())
+            hoverSprite = spriteAt(e.getX(), e.getY(), e.isControlDown());
         Sprite newSelection = hoverSprite;
 
         if (newSelection == null) 
