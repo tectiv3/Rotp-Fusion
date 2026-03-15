@@ -1665,6 +1665,15 @@ public final class Empire extends Species implements NamedObject {
 
         Collections.sort(colonies,
                 (Colony o1, Colony o2) -> (int)Math.signum(o1.expectedPopPct() - o2.expectedPopPct()));
+        // deprioritize poor planets as recipients so they fill up naturally
+        if (options.isTransportPoorFill()) {
+            Collections.sort(colonies, (Colony o1, Colony o2) -> {
+                boolean o1Poor = o1.planet().isResourcePoor() || o1.planet().isResourceUltraPoor();
+                boolean o2Poor = o2.planet().isResourcePoor() || o2.planet().isResourceUltraPoor();
+                if (o1Poor != o2Poor) return o1Poor ? 1 : -1;
+                return (int)Math.signum(o1.expectedPopPct() - o2.expectedPopPct());
+            });
+        }
         /*for (Colony c: colonies) {
             System.out.println("Transport Recipient "+c.expectedPopPct()+" "+c.expectedPopulation()+"/"+c.planet().currentSize()+" "+c.name());
         }*/
@@ -1694,10 +1703,23 @@ public final class Empire extends Species implements NamedObject {
                                 c.planet().isArtifact() || c.planet().isOrionArtifact())) {
                     continue;
                 }
+                // don't send population from colonies that are building ships
+                if (options.isTransportBuildDisabled() && c.shipyard().allocation() > 0) {
+                    continue;
+                }
                 // ship population out earlier, don't check if ecology is all done.
                 // ship population out earlier, don't check if industry is all done.
                 donors.add(c);
             }
+        }
+        // prioritize poor/ultra-poor planets as donors
+        if (options.isTransportPoorFill()) {
+            donors.sort((Colony o1, Colony o2) -> {
+                boolean o1Poor = o1.planet().isResourcePoor() || o1.planet().isResourceUltraPoor();
+                boolean o2Poor = o2.planet().isResourcePoor() || o2.planet().isResourceUltraPoor();
+                if (o1Poor != o2Poor) return o1Poor ? -1 : 1;
+                return 0;
+            });
         }
         /*for (Colony c: donors) {
             System.out.println("Transport Donor "+c.expectedPopulation()+"/"+c.planet().currentSize()+" "+c.name());

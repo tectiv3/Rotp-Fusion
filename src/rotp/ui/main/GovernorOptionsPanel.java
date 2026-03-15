@@ -692,6 +692,8 @@ public class GovernorOptionsPanel extends BasePanel{
 		this.transportMaxTurns.setValue(options.getTransportMaxTurns());
 		this.transportRichDisabled.setSelected(options.isTransportRichDisabled());
 		this.transportPoorDouble.setSelected(options.isTransportPoorDouble());
+		this.transportBuildDisabled.setSelected(options.isTransportBuildDisabled());
+		this.transportPoorFill.setSelected(options.isTransportPoorFill());
 
 		// StarGates Options
 		switch (govOptions().getGates()) {
@@ -749,6 +751,8 @@ public class GovernorOptionsPanel extends BasePanel{
 		options.setTransportMaxTurns((Integer)transportMaxTurns.getValue());
 		options.setTransportRichDisabled(transportRichDisabled.isSelected());
 		options.setTransportPoorDouble(transportPoorDouble.isSelected());
+		options.setTransportBuildDisabled(transportBuildDisabled.isSelected());
+		options.setTransportPoorFill(transportPoorFill.isSelected());
 
 		// StarGates Options
 		applyStargates();
@@ -851,7 +855,9 @@ public class GovernorOptionsPanel extends BasePanel{
         JLabel transportMaxTurnsLabel = new JLabel();
         JLabel transportMaxTurnsNebula = new JLabel();
         transportRichDisabled = new JCheckBox();
+        transportBuildDisabled = new JCheckBox();
         transportPoorDouble = new JCheckBox();
+        transportPoorFill = new JCheckBox();
         autotransportAI = new JCheckBox();
         allowUngoverned = new JCheckBox();
         allGovernorsOn = new JButton();
@@ -962,12 +968,30 @@ public class GovernorOptionsPanel extends BasePanel{
             }
         });
 
+        transportBuildDisabled.setText("Don't send from colonies building ships");
+        transportBuildDisabled.setName("TRANSPORT_BUILD_OFF"); // NOI18N
+        transportBuildDisabled.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent evt) {
+                transportBuildDisabledActionPerformed(evt);
+            }
+        });
+
         transportPoorDouble.setText("Send double from Poor planets");
         transportPoorDouble.setName("TRANSPORT_POOR_DBL"); // NOI18N
         transportPoorDouble.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent evt) {
                 transportPoorDoubleActionPerformed(evt);
+            }
+        });
+
+        transportPoorFill.setText("Fill Poor planets first (use as pop farms)");
+        transportPoorFill.setName("TRANSPORT_POOR_FILL"); // NOI18N
+        transportPoorFill.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent evt) {
+                transportPoorFillActionPerformed(evt);
             }
         });
 
@@ -996,6 +1020,7 @@ public class GovernorOptionsPanel extends BasePanel{
                 .addContainerGap()
                 .addGroup(autotransportPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(transportPoorDouble)
+                    .addComponent(transportPoorFill)
                     .addComponent(transportMaxTurnsNebula)
                     .addGroup(autotransportPanelLayout.createSequentialGroup()
                         .addComponent(transportMaxTurns, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -1004,7 +1029,8 @@ public class GovernorOptionsPanel extends BasePanel{
                     .addComponent(autotransportAI)
                     .addComponent(allowUngoverned)
                     .addComponent(autotransportFull, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(transportRichDisabled))
+                    .addComponent(transportRichDisabled)
+                    .addComponent(transportBuildDisabled))
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         autotransportPanelLayout.setVerticalGroup(autotransportPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -1023,7 +1049,11 @@ public class GovernorOptionsPanel extends BasePanel{
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(transportRichDisabled)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(transportPoorDouble))
+                .addComponent(transportBuildDisabled)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(transportPoorDouble)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(transportPoorFill))
         );
 
         allGovernorsOn.setText("All Governors ON");
@@ -1857,6 +1887,16 @@ public class GovernorOptionsPanel extends BasePanel{
 			govOptions().setTransportPoorDouble(transportPoorDouble.isSelected());
 	}//GEN-LAST:event_transportPoorDoubleActionPerformed
 
+	private void transportBuildDisabledActionPerformed(java.awt.event.ActionEvent evt) {
+		if (isAutoApply())
+			govOptions().setTransportBuildDisabled(transportBuildDisabled.isSelected());
+	}
+
+	private void transportPoorFillActionPerformed(java.awt.event.ActionEvent evt) {
+		if (isAutoApply())
+			govOptions().setTransportPoorFill(transportPoorFill.isSelected());
+	}
+
 	private void autoScoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoScoutActionPerformed
 		if (isAutoApply())
 			govOptions().setAutoScout(autoScout.isSelected());
@@ -2105,6 +2145,8 @@ public class GovernorOptionsPanel extends BasePanel{
     JSpinner transportMaxTurns;
     JCheckBox transportPoorDouble;
     JCheckBox transportRichDisabled;
+    JCheckBox transportBuildDisabled;
+    JCheckBox transportPoorFill;
     // End of variables declaration//GEN-END:variables
 
 	// Just test the layout

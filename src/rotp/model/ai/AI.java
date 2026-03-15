@@ -260,10 +260,22 @@ public class AI implements Base {
                 {
                     if(empire.isPlayerControlled() && session().getGovernorOptions().isTransportRichDisabled() && (sys.planet().productionAdj() > 1 || sys.planet().researchAdj() > 1))
                         continue;
+                    if(empire.isPlayerControlled() && session().getGovernorOptions().isTransportBuildDisabled() && sys.colony().shipyard().allocation() > 0)
+                        continue;
                     if(empire.isAIControlled() || sys.colony().isGovernor() || GameSession.instance().getGovernorOptions().isAutotransportUngoverned())
                         givey.add(col);
                 }
             }
+        }
+
+        // prioritize poor/ultra-poor as givers when option is set
+        if (empire.isPlayerControlled() && session().getGovernorOptions().isTransportPoorFill()) {
+            givey.sort((ColonyTransporter o1, ColonyTransporter o2) -> {
+                boolean o1Poor = o1.colony.planet().isResourcePoor() || o1.colony.planet().isResourceUltraPoor();
+                boolean o2Poor = o2.colony.planet().isResourcePoor() || o2.colony.planet().isResourceUltraPoor();
+                if (o1Poor != o2Poor) return o1Poor ? -1 : 1;
+                return 0;
+            });
         }
 
         if (needy.isEmpty() || givey.isEmpty()) {

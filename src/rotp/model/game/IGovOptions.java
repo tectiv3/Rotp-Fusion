@@ -36,6 +36,8 @@ public interface IGovOptions {
 	ParamBoolean autotransportAll	= new ParamBoolean(GOV_UI, "TRANSPORT_UNGOVERNED", false);
 	ParamBoolean transportNoRich	= new ParamBoolean(GOV_UI, "TRANSPORT_RICH_OFF", true);
 	ParamBoolean transportPoorX2	= new ParamBoolean(GOV_UI, "TRANSPORT_POOR_DBL", true);
+	ParamBoolean transportNoBuild	= new ParamBoolean(GOV_UI, "TRANSPORT_BUILD_OFF", true);
+	ParamBoolean transportPoorFill	= new ParamBoolean(GOV_UI, "TRANSPORT_POOR_FILL", true);
 	ParamInteger transportMaxDist	= new ParamInteger(GOV_UI, "TRANSPORT_MAX_TURNS", 5)
 			.setLimits(1, 15)
 			.setIncrements(1, 3, 5);

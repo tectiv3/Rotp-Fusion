@@ -72,6 +72,8 @@ public class GovernorOptions implements Serializable, IGovOptions {
 	private int 	transportMaxTurns		= getTransportMaxTurns();
 	private boolean transportRichDisabled	= isTransportRichDisabled();
 	private boolean transportPoorDouble		= isTransportPoorDouble();
+	private boolean transportBuildDisabled	= isTransportBuildDisabled();
+	private boolean transportPoorFillFirst	= isTransportPoorFill();
 
 	private int		minimumMissileBases		= getMinimumMissileBases();
 	private boolean shieldWithoutBases		= getShieldWithoutBases();
@@ -128,6 +130,8 @@ public class GovernorOptions implements Serializable, IGovOptions {
 			autotransportAll.silentSet(autotransportUngoverned);
 			transportNoRich.silentSet(transportRichDisabled);
 			transportPoorX2.silentSet(transportPoorDouble);
+			transportNoBuild.silentSet(transportBuildDisabled);
+			IGovOptions.transportPoorFill.silentSet(transportPoorFillFirst);
 			transportMaxDist.silentSet(transportMaxTurns);
 			starGateOption.silentSet(gates.name());
 			missileBasesMin.silentSet(minimumMissileBases);
@@ -223,6 +227,12 @@ public class GovernorOptions implements Serializable, IGovOptions {
 
 	public boolean	isTransportPoorDouble()			{ return transportPoorX2.get(); }
 	public void	setTransportPoorDouble(boolean b)	{ transportPoorX2.silentSet(b); }
+
+	public boolean	isTransportBuildDisabled()		{ return transportNoBuild.get(); }
+	public void	setTransportBuildDisabled(boolean b) { transportNoBuild.silentSet(b); }
+
+	public boolean	isTransportPoorFill()			{ return transportPoorFill.get(); }
+	public void	setTransportPoorFill(boolean b)		{ transportPoorFill.silentSet(b); }
 
 	public int		getTransportMaxTurns()			{ return transportMaxDist.get(); }
 	public void		setTransportMaxTurns(int i)		{ transportMaxDist.silentSet(i); }
