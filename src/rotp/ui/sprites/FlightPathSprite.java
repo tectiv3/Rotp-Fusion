@@ -33,6 +33,8 @@ import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.galaxy.Transport;
 import rotp.model.game.GameSession;
+import rotp.model.ships.ShipDesign;
+import rotp.util.ImageColorizer;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 
@@ -119,7 +121,7 @@ public class FlightPathSprite extends MapSprite {
             else if ((to.empId() != ship.empId()) && (ship() instanceof Transport))
                 c0 = Color.yellow;
             else
-                c0 = Color.green;
+                c0 = fleetDesignColor();
         }
         else {
             if (aggressiveToPlayer())
@@ -128,6 +130,14 @@ public class FlightPathSprite extends MapSprite {
                 c0 = Color.yellow;
         }
         return c0;
+    }
+    private Color fleetDesignColor() {
+        if (ship instanceof ShipFleet) {
+            ShipDesign des = ((ShipFleet) ship).slowestDesign();
+            if (des != null)
+                return ImageColorizer.color(des.shipColor());
+        }
+        return Color.green;
     }
     public Sprite from()                       { return (Sprite) ship; }
     public Ship ship()                         { return ship; }
