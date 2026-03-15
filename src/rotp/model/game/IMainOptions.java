@@ -412,6 +412,9 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public void setOption(Float val) { maxFlagScale((int) (80 * val)); }
 	}
 
+	ParamBoolean animateFlightPaths	= new ParamBoolean(MOD_UI, "ANIMATE_FLIGHT_PATHS", true).isCfgFile(true);
+	default boolean animateFlightPaths()	{ return animateFlightPaths.get(); }
+
 	ParamFloat   showPathFactor	= new ShowPathFactor();
 	final class ShowPathFactor extends ParamFloat {
 		ShowPathFactor() {

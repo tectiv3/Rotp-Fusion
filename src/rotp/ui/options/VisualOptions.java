@@ -28,7 +28,8 @@ final class VisualOptions extends AbstractOptionsSubUI {
 						showNextCouncil, 
 						raceStatusLog, 
 						showPendingOrders,
-						showTechProgress
+						showTechProgress,
+						animateFlightPaths
 						));
 		return majorList;
 	}

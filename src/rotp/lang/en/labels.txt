@@ -3243,6 +3243,8 @@ SETTINGS_MOD_SHOW_FLAG_FACTOR_DESC       | To adjust the galaxy map flags disapp
 SETTINGS_MOD_SHOW_FLAG_FACTOR            | Show Flag Factor: %1%
 SETTINGS_MOD_SHOW_PATH_FACTOR_DESC       | To adjust the galaxy map paths disappearance while zooming. Bigger factor means stay longer to the screen.
 SETTINGS_MOD_SHOW_PATH_FACTOR            | Show Path Factor: %1%
+SETTINGS_MOD_ANIMATE_FLIGHT_PATHS_DESC   | Animate the dashed flight path lines on the galaxy map. Disabling reduces visual noise and CPU usage.
+SETTINGS_MOD_ANIMATE_FLIGHT_PATHS        | Animate Flight Paths: %1
 SETTINGS_MOD_SHOW_NAME_MIN_FONT_DESC     | To adjust the galaxy map star name disappearance. Smaller value means stay longer to the screen.
 SETTINGS_MOD_SHOW_NAME_MIN_FONT          | Star Name Min Font: %1
 SETTINGS_MOD_SHOW_INFO_FONT_RATIO_DESC   | To adjust the galaxy map swap info to name only. Bigger ratio means stay longer to the screen.
