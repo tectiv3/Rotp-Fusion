@@ -243,6 +243,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         parent.parent.map().repaint();
     }
     public void cancelFleet() {
+        parent.parent.map().clearTargetMode();
         selectNewFleet(null);
         parent.parent.reselectCurrentSystem();
     }
@@ -350,6 +351,8 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                 return false;
             if (clickedFleet != selectedFleet())
                 selectNewFleet(clickedFleet);
+            if (clickedFleet.canBeSentBy(player()))
+                parent.parent.map().setTargetMode(GalaxyMapPanel.TargetMode.SYSTEM);
             return false;
         }
 

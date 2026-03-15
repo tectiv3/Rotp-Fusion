@@ -907,8 +907,10 @@ public class EmpireSystemPanel extends SystemPanel {
             else if (rallyPointBox.contains(x,y)){
                 if (rallyPointEnabled()) {
                     StarSystem sys =  parentSpritePanel.systemViewToDisplay();
-                    if (sys != null)
+                    if (sys != null) {
                         parentSpritePanel.parent.clickedSprite(sys.rallySprite());
+                        parentSpritePanel.parent.map().setTargetMode(GalaxyMapPanel.TargetMode.SYSTEM);
+                    }
                     parentSpritePanel.repaint();
                 }
             }
@@ -925,8 +927,9 @@ public class EmpireSystemPanel extends SystemPanel {
                     	if (e.isControlDown())
                     		sys.colony().toggleGovAutoTransport();
                     	else {
-	                        TransportDeploymentPanel.enableAbandon = false; 
+	                        TransportDeploymentPanel.enableAbandon = false;
 	                        parentSpritePanel.parent.clickedSprite(sys.transportSprite());
+	                        parentSpritePanel.parent.map().setTargetMode(GalaxyMapPanel.TargetMode.SYSTEM);
                     	}
                     }
                     parentSpritePanel.repaint();
@@ -936,8 +939,9 @@ public class EmpireSystemPanel extends SystemPanel {
                 if (transportEnabled()) {
                     StarSystem sys =  parentSpritePanel.systemViewToDisplay();
                     if (sys != null)  {
-                        TransportDeploymentPanel.enableAbandon = true; 
+                        TransportDeploymentPanel.enableAbandon = true;
                         parentSpritePanel.parent.clickedSprite(sys.transportSprite());
+                        parentSpritePanel.parent.map().setTargetMode(GalaxyMapPanel.TargetMode.SYSTEM);
                     }
                     parentSpritePanel.repaint();
                 }

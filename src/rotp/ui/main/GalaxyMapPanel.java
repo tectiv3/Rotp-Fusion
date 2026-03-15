@@ -147,6 +147,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private boolean searchingSprite = false;
     private boolean lastDwellCtrlDown = false;
     private final Timer dwellTimer;
+    public enum TargetMode { NONE, SYSTEM }
+    private TargetMode targetMode = TargetMode.NONE;
 
     private final Timer zoomTimer;
 
@@ -206,6 +208,16 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         return (x >= (mapMinX()*0.9f)) && (x <= (mapMaxX()*1.1f)) && (y >= (mapMinY()*0.9f)) && (y <= (mapMaxY()*1.1f));
     }
     public void cancelPendingHover() { dwellTimer.stop(); }
+    public void setTargetMode(TargetMode mode) {
+        targetMode = mode;
+        if (mode != TargetMode.NONE)
+            setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.CROSSHAIR_CURSOR));
+    }
+    public void clearTargetMode() {
+        targetMode = TargetMode.NONE;
+        setCursor(java.awt.Cursor.getDefaultCursor());
+    }
+    public TargetMode targetMode() { return targetMode; }
     public GalaxyMapPanel(IMapHandler p) {
         parent = p;
         zoomTimer = new Timer(10, this);
@@ -1179,6 +1191,17 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         Galaxy gal = galaxy();
         Empire pl = player();
 
+        // In targeting mode, only match star systems
+        if (targetMode == TargetMode.SYSTEM) {
+            if (parent.hoverOverSystems()) {
+                for (int id=0;id<gal.numStarSystems();id++) {
+                    if (gal.system(id).isSelectableAt(this, x1, y1))
+                        return gal.system(id);
+                }
+            }
+            return null;
+        }
+
         // if ctrl down, Star systems have priority
         if (ctrlDown && parent.hoverOverSystems()) {
             for (int id=0;id<gal.numStarSystems();id++) {
@@ -1400,7 +1423,7 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         if (UserPreferences.sensitivityClickOnly())
             return;
         // dwell mode: delay hover unless actively targeting (transport, fleet deploy)
-        if (UserPreferences.sensitivityDwell() && parent.clickedSprite() == null) {
+        if (UserPreferences.sensitivityDwell() && targetMode == TargetMode.NONE) {
             lastDwellCtrlDown = ctrlDown;
             int drift = Math.abs(x - prevX) + Math.abs(y - prevY);
             if (drift > 5)

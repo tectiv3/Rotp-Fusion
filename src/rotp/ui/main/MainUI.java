@@ -77,6 +77,7 @@ import rotp.ui.races.RacesUI;
 import rotp.ui.sprites.AlertDismissSprite;
 import rotp.ui.sprites.FlightPathSprite;
 import rotp.ui.sprites.HelpSprite;
+import rotp.ui.sprites.ShipRelocationSprite;
 import rotp.ui.sprites.SystemTransportSprite;
 import rotp.ui.sprites.YearDisplaySprite;
 import rotp.ui.vipconsole.VIPConsole;
@@ -692,6 +693,11 @@ public class MainUI extends BasePanel implements IMapHandler {
     @Override
     public void clickedSprite(Sprite s)      {
         map.cancelPendingHover();
+        boolean keepTargeting = (s instanceof SystemTransportSprite)
+            || (s instanceof ShipRelocationSprite)
+            || (s instanceof ShipFleet && ((ShipFleet) s).canBeSentBy(player()));
+        if (!keepTargeting)
+            map.clearTargetMode();
         sessionVar("MAINUI_CLICKED_SPRITE", s);
         if (s instanceof StarSystem)
             lastSystemSelected(s);
