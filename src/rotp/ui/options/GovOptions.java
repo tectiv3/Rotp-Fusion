@@ -22,7 +22,7 @@ final class GovOptions extends AbstractOptionsSubUI {
 		map.add(new SafeListParam(Arrays.asList(
 				new ParamTitle(HEAD_ID + "TRANSPORT_OPTIONS"),
 				autoTransportAI, autotransportFull, autotransportAll,
-				transportNoRich, transportPoorX2, transportMaxDist,
+				transportNoRich, transportNoBuild, transportPoorX2, transportPoorFill, transportMaxDist,
 
 				HEADER_SPACER_50,
 				new ParamTitle(HEAD_ID + "COLONY_OPTIONS"),
