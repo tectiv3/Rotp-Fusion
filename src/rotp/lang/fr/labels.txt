@@ -3288,7 +3288,8 @@ SETTINGS_MOD_SHOW_FLAG_FACTOR_DESC       | Pour régler la disparition des drape
 SETTINGS_MOD_SHOW_FLAG_FACTOR            | Taille min. Drapeaux : %1%
 SETTINGS_MOD_SHOW_PATH_FACTOR_DESC       | Pour régler la disparition des trajectoires de vols de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’elles resteront plus longtemps à l’écran.
 SETTINGS_MOD_SHOW_PATH_FACTOR            | Taille min. Trajectoires : %1%
-SETTINGS_MOD_SHOW_NAME_MIN_FONT_DESC     | Pour régler la disparition des noms d’étoiles de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’ils resteront plus longtemps à l’écran.
+SETTINGS_MOD_ANIMATE_FLIGHT_PATHS_DESC   | Animer les lignes de trajectoire sur la carte. Désactiver réduit le bruit visuel et l'utilisation du CPU.
+SETTINGS_MOD_ANIMATE_FLIGHT_PATHS        | Animer les Trajectoires : %1SETTINGS_MOD_SHOW_NAME_MIN_FONT_DESC     | Pour régler la disparition des noms d’étoiles de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’ils resteront plus longtemps à l’écran.
 SETTINGS_MOD_SHOW_NAME_MIN_FONT          | Taille min. noms d’étoiles : %1
 SETTINGS_MOD_SHOW_INFO_FONT_RATIO_DESC   | Pour régler la disparition des données des colonies de la carte de la galaxie lors du zoom. Un facteur plus grand signifie qu’elles resteront plus longtemps à l’écran.
 SETTINGS_MOD_SHOW_INFO_FONT_RATIO        | Taille infos colonies : %1%

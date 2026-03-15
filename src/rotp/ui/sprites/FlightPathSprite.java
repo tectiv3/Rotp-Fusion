@@ -271,7 +271,7 @@ public final class FlightPathSprite extends MapSprite {
 
         Stroke prevStroke = g2.getStroke();
 
-        int animationIndex = (animationCount/animationSpeed) %6;
+        int animationIndex = options().animateFlightPaths() ? (animationCount/animationSpeed) %6 : 0;
         if (isColonyRelocation) {
             Colony c = from.colony();
             if (c == null)

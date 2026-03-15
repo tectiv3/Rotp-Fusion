@@ -382,6 +382,9 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 	ParamBoolean  noFogOnIcons	= new ParamBoolean( BASE_UI, "NO_FOG_ON_ICONS", false).isCfgFile(true);
 	default boolean noFogOnIcons()	{ return noFogOnIcons.get(); }
 
+	ParamBoolean animateFlightPaths	= new ParamBoolean(MOD_UI, "ANIMATE_FLIGHT_PATHS", true).isCfgFile(true);
+	default boolean animateFlightPaths()	{ return animateFlightPaths.get(); }
+
 	ParamBoolean showPendingOrders	= new ParamBoolean(MOD_UI, "SHOW_PENDING_ORDERS", true)
 			.isCfgFile(true);
 	default boolean showPendingOrders()		{ return showPendingOrders.get(); }
