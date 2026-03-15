@@ -16,6 +16,7 @@ import static rotp.ui.UserPreferences.playMusic;
 import static rotp.ui.UserPreferences.playSounds;
 import static rotp.ui.UserPreferences.saveDir;
 import static rotp.ui.UserPreferences.selectedScreen;
+import static rotp.ui.UserPreferences.invertScroll;
 import static rotp.ui.UserPreferences.sensitivityMode;
 import static rotp.ui.UserPreferences.sensitivityToSettingName;
 import static rotp.ui.UserPreferences.soundVolume;
@@ -133,6 +134,18 @@ public interface IMainOptions extends IDebugOptions, ICombatOptions {
 		@Override public String getCfgValue()		{ return texturesToSettingName(get()); }
 		@Override public String getOption()			{ return texturesMode(); }
 		@Override public void setOption(String s)	{ texturesMode(s); }
+	}
+
+	ParamBoolean invertScrollMode = new InvertScrollMode();
+	final class InvertScrollMode extends ParamBoolean {
+		InvertScrollMode() {
+			super(GAME_UI, "INVERT_SCROLL",
+				System.getProperty("os.name", "").toLowerCase().contains("mac"));
+			isDuplicate(true);
+			isCfgFile(true);
+		}
+		@Override public Boolean getOption()		{ return invertScroll(); }
+		@Override public void setOption(Boolean b)	{ invertScroll(b); }
 	}
 
 	ParamList sensitivityMode = new SensitivityMode();

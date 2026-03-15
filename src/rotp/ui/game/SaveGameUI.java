@@ -15,6 +15,8 @@
  */
 package rotp.ui.game;
 
+import rotp.ui.UserPreferences;
+
 import static rotp.model.game.IBaseOptsTools.GAME_OPTIONS_FILE;
 import static rotp.model.game.IBaseOptsTools.LIVE_OPTIONS_FILE;
 
@@ -241,7 +243,7 @@ public final class SaveGameUI extends BasePanel implements MouseListener, MouseW
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         if (count < 0)
             scrollUp();
         else

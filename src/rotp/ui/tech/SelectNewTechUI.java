@@ -15,6 +15,8 @@
  */
 package rotp.ui.tech;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -406,7 +408,7 @@ public class SelectNewTechUI extends BasePanel implements MouseListener, MouseMo
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         int x = e.getX();
         int y = e.getY();
         int prevY = techsY;

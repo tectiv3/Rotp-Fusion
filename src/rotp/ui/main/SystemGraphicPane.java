@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -189,7 +191,7 @@ public class SystemGraphicPane extends BasePanel implements MouseMotionListener,
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        boolean up = e.getWheelRotation() > 0;
+        boolean up = UserPreferences.wheelRotation(e) > 0;
         parent.scrollToNextSystem(up);
     }
 }

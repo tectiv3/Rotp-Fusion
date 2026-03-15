@@ -15,6 +15,8 @@
  */
 package rotp.ui.fleets;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -788,7 +790,7 @@ public class SystemMassQueryPanel extends BasePanel {
         public void mouseWheelMoved(MouseWheelEvent e) {
             if (!topParent.showingQueryPanel())
                     return;
-            if (e.getWheelRotation() < 0)
+            if (UserPreferences.wheelRotation(e) < 0)
                 nextShipDesign(false);
             else
                 prevShipDesign(false);

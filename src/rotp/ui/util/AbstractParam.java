@@ -35,6 +35,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import rotp.Rotp;
+import rotp.ui.UserPreferences;
 import rotp.model.game.DynamicOptions;
 import rotp.model.game.GovernorOptions;
 import rotp.model.game.IGameOptions;
@@ -423,7 +424,7 @@ public abstract class AbstractParam <T> implements IParam<T> {
 		return 0;
 	}
 	protected int getDir(MouseWheelEvent e)	{
-		if (e.getWheelRotation() < 0) return 1;
+		if (UserPreferences.wheelRotation(e) < 0) return 1;
 		return -1;
 	}
 	//========== Static Methods ==========

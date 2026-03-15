@@ -1,5 +1,7 @@
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -2075,7 +2077,7 @@ public class GovernorOptionsPanel extends BasePanel{
 		}
 		SpinnerNumberModel model = (SpinnerNumberModel) spinner.getModel();
 		// BR: added Shift and Ctrl accelerator
-		int inc = (int) Math.signum(evt.getUnitsToScroll()) * model.getStepSize().intValue();
+		int inc = (int) Math.signum(UserPreferences.wheelRotation(evt)) * model.getStepSize().intValue();
 		if (evt.isShiftDown())
 			inc *= 5;
 		if (evt.isControlDown())

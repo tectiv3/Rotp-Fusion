@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -990,7 +992,7 @@ public class EmpireSystemPanel extends SystemPanel {
                         adjAmt = 20;
                     else if (ctrlPressed)
                         adjAmt = 50;
-                    if (e.getWheelRotation() < 0)
+                    if (UserPreferences.wheelRotation(e) < 0)
                     	incrementGovBuildPct(adjAmt);
                     else
                     	incrementGovBuildPct(-adjAmt);
@@ -1001,7 +1003,7 @@ public class EmpireSystemPanel extends SystemPanel {
                     adjAmt = 5;
                 else if (ctrlPressed)
                     adjAmt = 20;
-                if (e.getWheelRotation() < 0)
+                if (UserPreferences.wheelRotation(e) < 0)
                     incrementBuildLimit(adjAmt);
                 else
                     decrementBuildLimit(adjAmt);
@@ -1009,7 +1011,7 @@ public class EmpireSystemPanel extends SystemPanel {
             }
             if (shipDesignBox.contains(x,y) 
             || shipNameBox.contains(x,y)) {
-                if (e.getWheelRotation() < 0)
+                if (UserPreferences.wheelRotation(e) < 0)
                     nextShipDesign();
                 else
                     prevShipDesign();

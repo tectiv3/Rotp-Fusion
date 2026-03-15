@@ -514,7 +514,7 @@ abstract class AbstractOptionsUI extends BaseModPanel implements MouseWheelListe
 		checkModifierKey(e);
 		boolean shiftPressed = e.isShiftDown();
 		boolean ctrlPressed  = e.isControlDown();
-		boolean up = e.getWheelRotation() < 0;
+		boolean up = UserPreferences.wheelRotation(e) < 0;
 		mouseCommon(up, false, shiftPressed, ctrlPressed, null, e);
 	}
 }

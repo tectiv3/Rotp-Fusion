@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -123,7 +125,7 @@ public class UnexploredSystemPanel extends SystemPanel implements MouseMotionLis
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (hoverBox == flagBox) {
-            if (e.getWheelRotation() < 0)
+            if (UserPreferences.wheelRotation(e) < 0)
                 toggleFlagColor(true);
             else
                 toggleFlagColor(false);

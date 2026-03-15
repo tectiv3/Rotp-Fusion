@@ -15,6 +15,8 @@
  */
 package rotp.ui.tech;
 
+import rotp.ui.UserPreferences;
+
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
@@ -1451,7 +1453,7 @@ public class AllocateTechUI extends BasePanel implements MouseListener, MouseMot
     public void mouseWheelMoved(MouseWheelEvent e) {
         int x = e.getX();
         int y = e.getY();
-        int rot = e.getWheelRotation();
+        int rot = UserPreferences.wheelRotation(e);
         for (int i=0;i<sliderBox.length;i++) {
             if (hoverBox == sliderBox[i]) {
                 if (rot > 0)

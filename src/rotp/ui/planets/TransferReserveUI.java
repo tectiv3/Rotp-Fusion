@@ -15,6 +15,8 @@
  */
 package rotp.ui.planets;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -390,7 +392,7 @@ public final class TransferReserveUI extends BasePanel implements MouseListener,
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         if (hoverBox == reserveBox) {
             int prevAmt = amt;
             if (count < 0)

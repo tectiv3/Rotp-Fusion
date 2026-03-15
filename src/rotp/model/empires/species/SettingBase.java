@@ -16,6 +16,8 @@
 
 package rotp.model.empires.species;
 
+import rotp.ui.UserPreferences;
+
 import static rotp.Rotp.rand;
 import static rotp.model.game.IMainOptions.minListSizePopUp;
 import static rotp.ui.util.IParam.langHelp;
@@ -475,7 +477,7 @@ public class SettingBase<T> implements ICRSettings<T> {
 		return 0;
 	}
 	protected int getDir(MouseWheelEvent e) {
-		if (e.getWheelRotation() < 0) return 1;
+		if (UserPreferences.wheelRotation(e) < 0) return 1;
 		return -1;
 	}
 	protected void clearLists() {

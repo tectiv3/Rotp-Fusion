@@ -15,6 +15,8 @@
  */
 package rotp.ui.races;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -556,7 +558,7 @@ public class ManageSpiesUI extends BasePanel implements MouseListener, MouseWhee
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         for (int i=0;i<spendingBoxes.size(); i++) {
             if (hoverButton == spendingBoxes.get(i)) {
                 boolean changed = count < 0 ? increaseSliderValue(i) : decreaseSliderValue(i);

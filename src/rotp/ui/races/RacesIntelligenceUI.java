@@ -1122,7 +1122,7 @@ public final class RacesIntelligenceUI extends BasePanel implements MouseListene
     public void mouseWheelMoved(MouseWheelEvent e) {
         int x = e.getX();
         int y = e.getY();
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         int inc = 1;
         if (e.isShiftDown())
         	inc = 5;

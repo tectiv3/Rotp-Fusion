@@ -41,6 +41,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import rotp.model.Sprite;
+import rotp.ui.UserPreferences;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.Ship;
 import rotp.model.galaxy.ShipFleet;
@@ -746,7 +747,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            boolean up = e.getWheelRotation() > 0;
+            boolean up = UserPreferences.wheelRotation(e) > 0;
             scrollToNextFleet(up);
         }
     }
@@ -869,7 +870,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             super.paintComponent(g0);
             int w = getWidth();
             int h = getHeight();
-            int h1 = s90;
+            int h1 = s90 + s16;
 
             Empire pl = player();
             ShipFleet origFleet = parent.fleetToDisplay();
@@ -1074,6 +1075,16 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             if (text != null) {
             	scaledFont(g, text, w-s30, 16, 10);
             	drawString(g ,text, x0, y0);
+                y0 += lineH;
+            }
+            // Show fleet speed when known
+            boolean knowSpeed = displayFl.canBeSentBy(player()) || player().knowETA(displayFl);
+            if (knowSpeed) {
+                int speed = (int) displayFl.travelSpeed();
+                String speedText = text("MAIN_FLEET_SPEED", speed);
+                g.setColor(SystemPanel.blackText);
+                scaledFont(g, speedText, w-s30, 16, 10);
+                drawString(g, speedText, x0, y0);
                 y0 += lineH;
             }
             g.setFont(narrowFont(16));
@@ -1363,7 +1374,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            int count = e.getUnitsToScroll();
+            int count = UserPreferences.wheelRotation(e);
             if (count == 0)
                 return;
             if (hoverStackNum < 0)
