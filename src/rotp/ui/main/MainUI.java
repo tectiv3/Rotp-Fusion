@@ -690,8 +690,9 @@ public class MainUI extends BasePanel implements IMapHandler {
     @Override
     public Sprite clickedSprite()            { return (Sprite) sessionVar("MAINUI_CLICKED_SPRITE"); }
     @Override
-    public void clickedSprite(Sprite s)      { 
-        sessionVar("MAINUI_CLICKED_SPRITE", s); 
+    public void clickedSprite(Sprite s)      {
+        map.cancelPendingHover();
+        sessionVar("MAINUI_CLICKED_SPRITE", s);
         if (s instanceof StarSystem)
             lastSystemSelected(s);
     }

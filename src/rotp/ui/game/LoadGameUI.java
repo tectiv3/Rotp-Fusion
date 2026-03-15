@@ -15,6 +15,8 @@
  */
 package rotp.ui.game;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -331,7 +333,7 @@ public final class LoadGameUI  extends BasePanel implements MouseListener, Mouse
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         int absCount = Math.abs(count);
         if (count < 0) {
             while (absCount > 0) {

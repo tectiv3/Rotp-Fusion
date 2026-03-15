@@ -3867,7 +3867,7 @@ public class DesignUI extends BasePanel {
 			if (e.isAltDown())
 				govOptions().autoScout(e);
 			else {
-				boolean up = e.getUnitsToScroll() < 0;
+				boolean up = UserPreferences.wheelRotation(e) < 0;
 				int incr = up? 1 : -1;
 				if (e.isShiftDown())
 					incr *= 5;
@@ -3882,7 +3882,7 @@ public class DesignUI extends BasePanel {
 			if (e.isAltDown())
 				govOptions().autoColony(e);
 			else {
-				boolean up = e.getUnitsToScroll() < 0;
+				boolean up = UserPreferences.wheelRotation(e) < 0;
 				int incr = up? 1 : -1;
 				if (e.isShiftDown())
 					incr *= 5;
@@ -3897,7 +3897,7 @@ public class DesignUI extends BasePanel {
 			if (e.isAltDown())
 				govOptions().autoAttack(e);
 			else {
-				boolean up = e.getUnitsToScroll() < 0;
+				boolean up = UserPreferences.wheelRotation(e) < 0;
 				int incr = up? 1 : -1;
 				if (e.isShiftDown())
 					incr *= 5;
@@ -4253,7 +4253,7 @@ public class DesignUI extends BasePanel {
             }
         }
 		@Override public void mouseWheelMoved(MouseWheelEvent e)	{
-			int count = e.getUnitsToScroll();
+			int count = UserPreferences.wheelRotation(e);
 			boolean shiftPressed = e.isShiftDown();
 			boolean ctrlPressed = e.isControlDown();
 			if (shipDesign().active()) {

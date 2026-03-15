@@ -15,6 +15,8 @@
  */
 package rotp.ui.game;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -217,7 +219,7 @@ final class SelectRestartEmpireUI  extends BasePanel implements MouseListener, M
 			repaint();
 	}
 	@Override public void mouseWheelMoved(MouseWheelEvent e) {
-		int count = e.getUnitsToScroll();
+		int count = UserPreferences.wheelRotation(e);
 		if (count < 0)
 			scrollUp();
 		else

@@ -974,7 +974,7 @@ public final class RacesMilitaryUI extends BasePanel implements MouseListener, M
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         int x = e.getX();
         int y = e.getY();
         if ((hoverShape == shipListBox)

@@ -233,10 +233,11 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         float y = obj.y();
         return (x >= (mapMinX()*0.9f)) && (x <= (mapMaxX()*1.1f)) && (y >= (mapMinY()*0.9f)) && (y <= (mapMaxY()*1.1f));
     }
+    public void cancelPendingHover() { dwellTimer.stop(); }
     public GalaxyMapPanel(IMapHandler p) {
         parent = p;
         zoomTimer = new Timer(10, this);
-        dwellTimer = new Timer(1000, e -> dwellHover());
+        dwellTimer = new Timer(500, e -> dwellHover());
         dwellTimer.setRepeats(false);
         init0();
     }
@@ -551,9 +552,12 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         clearRangeMap();
     }
     public void adjustZoom(int z) {
+        adjustZoom((double) z);
+    }
+    public void adjustZoom(double z) {
         int MIN_SCALE = 4;
         if (parent.canChangeMapScales()) {
-            float multiplier = pow(zoomBase,z);
+            float multiplier = (float) Math.pow(zoomBase, z);
             float newScale = scaleY()*multiplier;
             newScale = max(MIN_SCALE, min(2*maxScale(), newScale));
             desiredScale = newScale;
@@ -1356,14 +1360,14 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         // if we are hovering over a sprite and it accepts mousewheel
         // then do that
         if ((hoverSprite != null) && hoverSprite.acceptWheel()) {
-            hoverSprite.wheel(this, e.getWheelRotation(), false);
+            hoverSprite.wheel(this, UserPreferences.wheelRotation(e), false);
             return;
         }
 
         if (parent.forwardMouseEvents())
             parent.mouseWheelMoved(e);
         else
-            adjustZoom(e.getWheelRotation());
+            adjustZoom(UserPreferences.preciseWheelRotation(e));
     }
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -1428,10 +1432,12 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         // click-only mode: no hover detection at all
         if (UserPreferences.sensitivityClickOnly())
             return;
-        // dwell mode: only detect after cursor is stationary for 2 seconds
-        if (UserPreferences.sensitivityDwell()) {
+        // dwell mode: delay hover unless actively targeting (transport, fleet deploy)
+        if (UserPreferences.sensitivityDwell() && parent.clickedSprite() == null) {
             lastDwellCtrlDown = ctrlDown;
-            dwellTimer.restart();
+            int drift = Math.abs(x - prevX) + Math.abs(y - prevY);
+            if (drift > 5)
+                dwellTimer.restart();
             return;
         }
         if (maxMouseVelocity > 0) {

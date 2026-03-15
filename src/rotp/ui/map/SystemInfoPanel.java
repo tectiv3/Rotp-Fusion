@@ -15,6 +15,8 @@
  */
 package rotp.ui.map;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -286,7 +288,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
         	setModifierKeysState(e); // BR: For the Flag color selection
             if (hoverBox == flagBox) {
                 StarSystem sys = systemViewToDisplay();
-                if (e.getWheelRotation() < 0)
+                if (UserPreferences.wheelRotation(e) < 0)
                     player().sv.toggleFlagColor(sys.id, true);
                 else
                     player().sv.toggleFlagColor(sys.id, false);
@@ -481,7 +483,7 @@ public class SystemInfoPanel extends SystemPanel implements MouseMotionListener 
         public void mouseExited(MouseEvent e) { }
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			if (e.getWheelRotation() > 0)
+			if (UserPreferences.wheelRotation(e) > 0)
 				offsetY += scrollH;
 			else
 				offsetY = max(0, offsetY-scrollH);

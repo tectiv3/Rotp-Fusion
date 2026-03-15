@@ -22,6 +22,7 @@ import static rotp.model.game.IConvenienceOptions.AUTOBOMBARD_NO;
 import static rotp.model.game.IConvenienceOptions.AUTOBOMBARD_WAR;
 import static rotp.model.game.IConvenienceOptions.AUTOBOMBARD_YES;
 
+import java.awt.event.MouseWheelEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,6 +59,7 @@ public class UserPreferences implements IMainOptions {
 	private static String graphicsMode    = GRAPHICS_HIGH;
 	private static String texturesMode    = TEXTURES_BOTH;
 	private static String sensitivityMode = SENSITIVITY_HIGH;
+	private static boolean invertScroll = System.getProperty("os.name", "").toLowerCase().contains("mac");
 	private static String saveDir = "";
 	private static float uiTexturePct = 0.20f;
 	private static int screenSizePct = 93;
@@ -112,6 +114,20 @@ public class UserPreferences implements IMainOptions {
 	public static boolean sensitivityLow()	     { return sensitivityMode.equals(SENSITIVITY_LOW); }
 	public static boolean sensitivityClickOnly() { return sensitivityMode.equals(SENSITIVITY_CLICK); }
 	public static boolean sensitivityDwell()     { return sensitivityMode.equals(SENSITIVITY_DWELL); }
+
+	public static void invertScroll(boolean b)   { invertScroll = b; save(); }
+	public static boolean invertScroll()         { return invertScroll; }
+
+	/** Returns wheel rotation adjusted for user's invert-scroll preference. */
+	public static int wheelRotation(MouseWheelEvent e) {
+		int rot = e.getWheelRotation();
+		return invertScroll ? -rot : rot;
+	}
+	/** Returns precise wheel rotation adjusted for invert-scroll. Smoother on trackpads. */
+	public static double preciseWheelRotation(MouseWheelEvent e) {
+		double rot = e.getPreciseWheelRotation();
+		return invertScroll ? -rot : rot;
+	}
 
 	private static boolean graphicLow()		{ return graphicsMode().equals(GRAPHICS_LOW); }
 	private static boolean graphicHigh()		{ return graphicsMode().equals(GRAPHICS_HIGH); }
@@ -195,6 +211,7 @@ public class UserPreferences implements IMainOptions {
 			out.println(keyFormat("BACKUP_TURNS")+ backupTurns);
 			out.println(keyFormat("TEXTURES")+texturesToSettingName(texturesMode));
 			out.println(keyFormat("SENSITIVITY")+sensitivityToSettingName(sensitivityMode));
+			out.println(keyFormat("INVERT_SCROLL")+ yesOrNo(invertScroll));
 			out.println(keyFormat("SHOW_MEMORY")+ yesOrNo(showMemory));
 			out.println(keyFormat("DISPLAY_YEAR")+ yesOrNo(displayYear));
 			out.println(keyFormat("SCREEN_SIZE_PCT")+ screenSizePct());
@@ -263,6 +280,7 @@ public class UserPreferences implements IMainOptions {
 			case "BACKUP_TURNS": backupTurns  = Integer.valueOf(val); return;
 			case "TEXTURES":     texturesMode = texturesFromSettingName(val); return;
 			case "SENSITIVITY":  sensitivityMode = sensitivityFromSettingName(val); return;
+			case "INVERT_SCROLL": invertScroll = yesOrNo(val); return;
 			case "SHOW_MEMORY":  showMemory = yesOrNo(val); return;
 			case "SCREEN_SIZE_PCT": setScreenSizePct(Integer.valueOf(val)); return;
 			case "SELECTED_SCREEN": setSelectedScreen(Integer.valueOf(val)); return;

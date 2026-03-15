@@ -534,9 +534,15 @@ GAME_SETTINGS_SENSITIVITY_LOW_HELP    | Slowest response with minimal CPU requir
 GAME_SETTINGS_SENSITIVITY_LOW         | Low
 GAME_SETTINGS_SENSITIVITY_CLICK_HELP  | No hover detection. Systems and fleets are only selected when clicked.
 GAME_SETTINGS_SENSITIVITY_CLICK       | Click Only
-GAME_SETTINGS_SENSITIVITY_DWELL_HELP  | Highlights objects only after the cursor stays still for 1 second.
+GAME_SETTINGS_SENSITIVITY_DWELL_HELP  | Highlights objects only after the cursor stays still for half a second.
 GAME_SETTINGS_SENSITIVITY_DWELL       | Dwell
 GAME_SETTINGS_SENSITIVITY_DESC        | Toggle how quickly the galaxy map responds to mouse movement when updating the display panel.
+GAME_SETTINGS_INVERT_SCROLL           | Invert Scroll: %1
+GAME_SETTINGS_INVERT_SCROLL_YES       | Inverted
+GAME_SETTINGS_INVERT_SCROLL_NO        | Normal
+GAME_SETTINGS_INVERT_SCROLL_YES_DESC  | Scroll direction is reversed. Use if scrolling feels backwards on your system.
+GAME_SETTINGS_INVERT_SCROLL_NO_DESC   | Standard scroll direction.
+GAME_SETTINGS_INVERT_SCROLL_DESC      | Reverse the mouse scroll wheel direction for zooming and list scrolling.
 GAME_SETTINGS_MEMORY                  | Show Memory Usage: %1
 GAME_SETTINGS_MEMORY_YES              | Show
 GAME_SETTINGS_MEMORY_NO               | No
@@ -946,6 +952,7 @@ MAIN_FLEET_ETA_NAMED              | ETA to %1: %2 Years
 MAIN_FLEET_SET_RALLY              | Rallying
 MAIN_FLEET_AUTO_RETREAT           | Automatically retreat upon arrival
 MAIN_FLEET_ETA_UNKNOWN            | Scanners cannot determine destination
+MAIN_FLEET_SPEED                  | Fleet Speed: Warp %1
 MAIN_FLEET_THROUGH_NEBULA         | Maximum speed limited to Warp %1 by nebula
 MAIN_FLEET_SELECT_ALL             | All
 

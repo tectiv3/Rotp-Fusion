@@ -15,6 +15,8 @@
  */
 package rotp.ui.races;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -501,7 +503,7 @@ public class ManageDiplomatsUI  extends BasePanel implements MouseListener, Mous
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         if ((hoverBox == listBox)
         || (hoverBox == listScroller)) {
             int prevY = listY;

@@ -51,6 +51,7 @@ import rotp.model.colony.ColonyIndustry;
 import rotp.model.galaxy.StarSystem;
 import rotp.model.game.GameSession;
 import rotp.ui.BasePanel;
+import rotp.ui.UserPreferences;
 import rotp.ui.RotPUI;
 import rotp.ui.SystemViewer;
 import rotp.ui.UserPreferences;
@@ -943,7 +944,7 @@ public class EmpireColonySpendingPane extends BasePanel {
         }
         @Override public void mouseWheelMoved(MouseWheelEvent e) {
 			setModifierKeysState(e);
-            int rot = e.getWheelRotation();
+            int rot = UserPreferences.wheelRotation(e);
             if (hoverBox == sliderBox) {
                 if (rot > 0)
                     decrement(false);

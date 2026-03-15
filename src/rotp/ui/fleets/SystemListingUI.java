@@ -16,6 +16,8 @@
 package rotp.ui.fleets;
 
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -98,6 +100,10 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
     boolean scrolling = false;
     int minSelectableIndex = -1;
     int maxSelectableIndex = -1;
+    // Trackpad bounce suppression
+    private long   scrollLastTime = 0;
+    private int    scrollLastSign = 0;
+    private static final long SCROLL_BOUNCE_LOCKOUT_MS = 150;
 
     public SystemListingUI(BasePanel p) {
         topParent = p;
@@ -357,7 +363,19 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         }
         if (!scrolling)
             return;
-        boolean scrolled = (e.getWheelRotation() < 0) ? scrollUp() : scrollDown();
+        int rot = UserPreferences.wheelRotation(e);
+        if (rot == 0)
+            return;
+        int sign = rot > 0 ? 1 : -1;
+        long now = System.currentTimeMillis();
+        // Suppress trackpad bounce: ignore rapid direction reversals
+        if (sign != scrollLastSign && scrollLastSign != 0
+                && (now - scrollLastTime) < SCROLL_BOUNCE_LOCKOUT_MS) {
+            return;
+        }
+        scrollLastSign = sign;
+        scrollLastTime = now;
+        boolean scrolled = (rot < 0) ? scrollUp() : scrollDown();
         if (scrolled)
             topParent.repaint();
     }
@@ -1299,7 +1317,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         public boolean wantsMouseWheel()       { return true; }
         @Override
         public void mouseWheelMoved(StarSystem sys, MouseWheelEvent e) {
-            int rot = e.getWheelRotation();
+            int rot = UserPreferences.wheelRotation(e);
             if (rot > 0)
                 sys.transportSprite().decrement(rot);
             else if (rot  < 0)
@@ -1390,7 +1408,7 @@ public abstract class SystemListingUI extends BasePanel implements MouseListener
         @Override
         public void mouseWheelMoved(StarSystem sys, MouseWheelEvent e) {
         	setModifierKeysState(e); // BR: For the Flag color selection
-            int rot = e.getWheelRotation();
+            int rot = UserPreferences.wheelRotation(e);
             if (rot < 0)
                 player().sv.toggleFlagColor(sys.id, true);
             else 

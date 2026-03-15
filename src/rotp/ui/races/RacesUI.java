@@ -1365,7 +1365,7 @@ public class RacesUI extends BasePanel {
         }
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-            int count = e.getUnitsToScroll();           
+            int count = UserPreferences.wheelRotation(e);
             boolean hoveringEmp = false;
             for (Rect rect: contactBoxes.values()) {
                 if (hoverShape == rect) {

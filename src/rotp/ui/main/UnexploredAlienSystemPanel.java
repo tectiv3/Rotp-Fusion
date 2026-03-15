@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -266,7 +268,7 @@ public class UnexploredAlienSystemPanel extends SystemPanel {
         	setModifierKeysState(e); // BR: For the Flag color selection
             if (hoverBox == flagBox) {
                 StarSystem sys = parentSpritePanel.systemViewToDisplay();
-                if (e.getWheelRotation() < 0)
+                if (UserPreferences.wheelRotation(e) < 0)
                     player().sv.toggleFlagColor(sys.id, true);
                 else
                     player().sv.toggleFlagColor(sys.id, false);

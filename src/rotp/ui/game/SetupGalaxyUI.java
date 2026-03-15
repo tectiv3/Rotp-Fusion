@@ -2631,7 +2631,7 @@ public final class SetupGalaxyUI  extends BaseModPanel implements ISpecies, Mous
 		}
 	}
 	@Override public void mouseWheelMoved(MouseWheelEvent e) {
-		boolean up = e.getWheelRotation() > 0;
+		boolean up = UserPreferences.wheelRotation(e) > 0;
 		if (hoverBox == shapeBox)
 			shapeSelection.toggle(e);
 		else if (hoverBox == galaxyBox)

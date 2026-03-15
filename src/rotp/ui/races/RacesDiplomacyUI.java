@@ -1382,7 +1382,7 @@ public final class RacesDiplomacyUI extends BasePanel implements MouseListener, 
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         int inc = 1;
         if (e.isShiftDown())
         	inc = 5;

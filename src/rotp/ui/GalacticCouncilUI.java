@@ -15,6 +15,8 @@
  */
 package rotp.ui;
 
+import rotp.ui.UserPreferences;
+
 import static rotp.model.game.IDebugOptions.AUTORUN_OTHERFILE;
 import static rotp.ui.vipconsole.IVIPConsole.SPACER;
 
@@ -1370,7 +1372,7 @@ public final class GalacticCouncilUI extends FadeInPanel
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         if ((hoverTarget == voterListBox)
         || (hoverTarget == scrollbar)) {
             int prevY = scrollbarY;

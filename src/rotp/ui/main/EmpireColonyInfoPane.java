@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import static rotp.model.colony.ColonyDefense.MAX_BASES;
 
 import java.awt.Color;
@@ -542,7 +544,7 @@ public class EmpireColonyInfoPane extends BasePanel {
         }
         @Override public void mouseWheelMoved(MouseWheelEvent e)	{
         	parentUI.enterCurrentPane(this);
-            if (e.getWheelRotation() < 0)
+            if (UserPreferences.wheelRotation(e) < 0)
                 incrementBases(e);
             else
                 decrementBases(e);

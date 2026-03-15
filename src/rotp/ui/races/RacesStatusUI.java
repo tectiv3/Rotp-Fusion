@@ -764,7 +764,7 @@ public final class RacesStatusUI extends BasePanel implements MouseListener, Mou
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        int count = e.getUnitsToScroll();
+        int count = UserPreferences.wheelRotation(e);
         for (int i=0;i<dataBoxes.length;i++) {
             if ((hoverShape == dataBoxes[i])
             || (hoverShape == dataScrollers[i])) {

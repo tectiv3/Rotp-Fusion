@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -214,7 +216,7 @@ public class EmpireColonyFoundedPane extends BasePanel implements MouseMotionLis
     public void mouseWheelMoved(MouseWheelEvent e) {
     	setModifierKeysState(e); // BR: For the Flag color selection
         if (hoverBox == flagBox) {
-            if (e.getWheelRotation() < 0)
+            if (UserPreferences.wheelRotation(e) < 0)
                 toggleFlagColor(true);
             else
                 toggleFlagColor(false);

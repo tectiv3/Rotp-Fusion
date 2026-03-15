@@ -15,6 +15,8 @@
  */
 package rotp.ui.main;
 
+import rotp.ui.UserPreferences;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -257,7 +259,7 @@ public class WarViewPanel extends SystemPanel {
 		@Override public void mouseEntered(MouseEvent e)	{ clearHoverSprite(e, parent.parent); }
 		@Override public void mouseExited(MouseEvent e)		{ setModifierKeysState(e); }
 		@Override public void mouseWheelMoved(MouseWheelEvent e) {
-			if (e.getWheelRotation() > 0)
+			if (UserPreferences.wheelRotation(e) > 0)
 				offsetY += scrollH;
 			else
 				offsetY = max(0, offsetY-scrollH);

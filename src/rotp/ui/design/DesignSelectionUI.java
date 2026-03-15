@@ -15,6 +15,8 @@
  */
 package rotp.ui.design;
 
+import rotp.ui.UserPreferences;
+
 import static rotp.ui.vipconsole.IVIPConsole.EQUAL_SEP;
 import static rotp.ui.vipconsole.IVIPConsole.SPACER;
 
@@ -406,7 +408,7 @@ public abstract class DesignSelectionUI extends BasePanel implements MouseListen
     }
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (e.getWheelRotation() < 0)
+        if (UserPreferences.wheelRotation(e) < 0)
             scrollUp();
         else
             scrollDown();

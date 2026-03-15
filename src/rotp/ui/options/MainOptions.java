@@ -38,7 +38,7 @@ public final class MainOptions extends AbstractOptionsSubUI {
 				Arrays.asList(
 						displayMode, graphicsMode,
 						texturesMode, sensitivityMode,
-						selectedScreen,
+						invertScrollMode, selectedScreen,
 
 						null,
 						soundVolume, musicVolume,
