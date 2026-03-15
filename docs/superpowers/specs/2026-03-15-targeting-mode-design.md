@@ -31,7 +31,7 @@ Fields and methods on `GalaxyMapPanel`:
 When `targetMode == SYSTEM`:
 
 - Skip fleet/ship iteration entirely (not "iterate then reject" — zero wasted work)
-- Skip flight path checks
+- Skip flight path checks (including working flight paths which are normally always selectable)
 - Skip transport sprite checks
 - Only run the star system iteration
 - Ignore Ctrl-key priority swap (systems always win)
@@ -47,11 +47,19 @@ This is an early-exit optimization at the top of each sprite search section.
 | Send Transports | Transport button click | `EmpireSystemPanel.java` |
 | Abandon Colony | Abandon button click | `EmpireSystemPanel.java` |
 | Rally Point | Rally button click | `EmpireSystemPanel.java` |
-| Fleet Deployment | Fleet becomes clicked sprite | `FleetPanel.java` |
+| Fleet Deployment | Player fleet accepted via `useClickedSprite()` | `FleetPanel.java` |
+
+Note on fleet deployment: clicking a fleet first opens it for viewing/inspection. Targeting mode activates only when `FleetPanel.useClickedSprite()` accepts a *player* fleet for deployment (i.e., `fleet.canBeSentBy(player())`). Clicking an enemy fleet for inspection does NOT activate targeting.
 
 **Clearing targeting mode** — automatic cleanup in `MainUI.clickedSprite(Sprite s)`:
 
-When the new clicked sprite is NOT a targeting sprite (not `SystemTransportSprite`, `ShipRelocationSprite`, or `ShipFleet`), call `clearTargetMode()`. This provides a single cleanup point rather than scattering clear calls.
+When the new clicked sprite is NOT an active targeting sprite, call `clearTargetMode()`. The check must distinguish:
+- `SystemTransportSprite` / `ShipRelocationSprite` → keep targeting (always targeting actions)
+- `ShipFleet` that `canBeSentBy(player())` → keep targeting (player fleet deployment)
+- `ShipFleet` that is enemy/non-deployable → clear targeting (inspection only)
+- `StarSystem` or anything else → clear targeting
+
+This provides a single cleanup point rather than scattering clear calls.
 
 Also cleared explicitly on: ESC key, Cancel button, right-click cancel.
 
