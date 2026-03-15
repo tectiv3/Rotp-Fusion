@@ -8,7 +8,7 @@ MINI    = target/rotp-$(VERSION)-mini.jar
 # macOS build — update pom version to today's date, then build
 build:
 	sed -i '' 's|<version>Fusion-[0-9]*-[0-9]*-[0-9]*</version>|<version>$(VERSION)</version>|' pom.xml
-	mvn package -DskipTests -Dmaven.assembly.skipAssembly=true; \
+	mvn package -DskipTests -Pmac; \
 	test -f $(JAR) && echo "BUILD OK: $(JAR)"
 
 compile:
