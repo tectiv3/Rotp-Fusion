@@ -32,6 +32,7 @@ import rotp.model.Sprite;
 import rotp.model.empires.Empire;
 import rotp.model.galaxy.ShipFleet;
 import rotp.model.galaxy.StarSystem;
+import rotp.model.galaxy.Transport;
 import rotp.ui.BasePanel;
 import rotp.ui.main.GalaxyMapPanel;
 import rotp.ui.main.MainUI;
@@ -55,6 +56,7 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
     int sysId;
     ShipFleet fleet;
     int pop, endPop, estKills, estFactoryKills, bases, endBases, fact, endFact, shield, transports;
+    int orbitingTroops, inTransitTroops, inTransitETA;
     boolean drawSprites = false;
     ClickToContinueSprite clickSprite;
     BombardNoSprite noButton = new BombardNoSprite();
@@ -83,6 +85,16 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         fact = endFact = pl.sv.factories(sysId);
         shield = sys.colony().defense().shieldLevel();
         transports = player().transportsInTransit(sys);
+        orbitingTroops = sys.orbitingTransports(pl.id);
+        inTransitTroops = transports - orbitingTroops;
+        inTransitETA = Integer.MAX_VALUE;
+        for (Transport tr : galaxy().transports()) {
+            if (tr != null && tr.empId() == pl.id && tr.destSysId() == sys.id) {
+                inTransitETA = Math.min(inTransitETA, tr.travelTurnsRemainingAdjusted());
+            }
+        }
+        if (inTransitETA == Integer.MAX_VALUE)
+            inTransitETA = 0;
         noButton.reset();
         yesButton.reset();
         targetButton.reset();
@@ -187,7 +199,8 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
         int w = ui.getWidth();
         int h = ui.getHeight();
 
-        int transportH = transports > 0 ? s20 : 0;
+        int transportLines = (orbitingTroops > 0 ? 1 : 0) + (inTransitTroops > 0 ? 1 : 0);
+        int transportH = transportLines * s20;
         boolean targetOK = options().targetBombardAllowedForPlayer();
         int bdrW = s7;
         int buttonOffset = targetOK? s35 : 0; // BR: adjusted for target
@@ -283,13 +296,20 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
             g.setFont(narrowFont(titleFontSize));
             drawString(g,titleStr, boxX+leftW, boxY+s25);
 
-            if (transports > 0) {
-                String subtitleStr = text("MAIN_BOMBARD_TROOPS", str(transports));
-                subtitleStr = player().replaceTokens(subtitleStr, "alien");
-                g.setColor(Color.black);
-                int subtitleFontSize = min(titleFontSize-2, scaledFont(g, subtitleStr, boxW-leftW, 20, 14));
-                g.setFont(narrowFont(subtitleFontSize));
-                drawString(g,subtitleStr, boxX+leftW, boxY+s25+transportH);         
+            int transportY = boxY+s25;
+            if (orbitingTroops > 0) {
+                transportY += s20;
+                String arrivingStr = text("MAIN_BOMBARD_TROOPS_ARRIVING", str(orbitingTroops));
+                int arrivingFontSize = min(titleFontSize-2, scaledFont(g, arrivingStr, boxW-leftW, 20, 14));
+                g.setFont(narrowFont(arrivingFontSize));
+                drawShadowedString(g, arrivingStr, 2, boxX+leftW, transportY, SystemPanel.textShadowC, Color.yellow);
+            }
+            if (inTransitTroops > 0) {
+                transportY += s20;
+                String transitStr = text("MAIN_BOMBARD_TROOPS_TRANSIT", str(inTransitTroops), str(inTransitETA));
+                int transitFontSize = min(titleFontSize-2, scaledFont(g, transitStr, boxW-leftW, 20, 14));
+                g.setFont(narrowFont(transitFontSize));
+                drawString(g, transitStr, boxX+leftW, transportY);
             }
             
             // calc width needed for yes/no buttons
@@ -681,10 +701,11 @@ public class MapOverlayBombardPrompt extends MapOverlay implements IVIPListener 
 	            titleStr = text("NEUTRAL_BOMBARD_TITLE", sysName);
 	        titleStr = sys.empire().replaceTokens(titleStr, "alien");
 	        message += IVIPConsole.SPACER + titleStr;
-	        if (transports > 0) {
-	            String subtitleStr = text("MAIN_BOMBARD_TROOPS", str(transports));
-	            subtitleStr = player().replaceTokens(subtitleStr, "alien");
-	            message += subtitleStr;
+	        if (orbitingTroops > 0) {
+	            message += " " + text("MAIN_BOMBARD_TROOPS_ARRIVING", str(orbitingTroops));
+	        }
+	        if (inTransitTroops > 0) {
+	            message += " " + text("MAIN_BOMBARD_TROOPS_TRANSIT", str(inTransitTroops), str(inTransitETA));
 	        }
         }
         // planet name
