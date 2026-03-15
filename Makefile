@@ -19,9 +19,10 @@ compile:
 	mvn compile -q
 
 # fast dev cycle — compile only changed files, run from classes (no jar rebuild)
+# filter out webp-imageio (x86_64-only native lib, not needed for full assets)
 dev: $(CPFILE)
 	mvn compile -q && \
-	java -cp "target/classes:$$(cat $(CPFILE))" rotp.RotpGovernor
+	java -cp "target/classes:$$(grep -o '[^:]*' $(CPFILE) | grep -v webp-imageio | paste -sd: -)" rotp.RotpGovernor
 
 $(CPFILE):
 	mvn dependency:build-classpath -q -Dmdep.outputFile=$(CPFILE)
