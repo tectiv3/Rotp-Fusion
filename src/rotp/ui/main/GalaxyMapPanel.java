@@ -145,6 +145,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     private Area darkRangeArea;
     private int maxMouseVelocity = -1;
     private boolean searchingSprite = false;
+    private boolean lastDwellCtrlDown = false;
+    private final Timer dwellTimer;
 
     private final Timer zoomTimer;
 
@@ -206,6 +208,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
     public GalaxyMapPanel(IMapHandler p) {
         parent = p;
         zoomTimer = new Timer(10, this);
+        dwellTimer = new Timer(1000, e -> dwellHover());
+        dwellTimer.setRepeats(false);
         init0();
     }
     private void init0() {
@@ -1391,6 +1395,12 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         // click-only mode: no hover detection at all
         if (UserPreferences.sensitivityClickOnly())
             return;
+        // dwell mode: only detect after cursor is stationary for 2 seconds
+        if (UserPreferences.sensitivityDwell()) {
+            lastDwellCtrlDown = ctrlDown;
+            dwellTimer.restart();
+            return;
+        }
         if (maxMouseVelocity > 0) {
             long timeS = (lastMouseTime - prevTime);
             if (timeS == 0)
@@ -1445,6 +1455,16 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         // sprite has changed, so pass it to the parent UI for proper handling
         parent.hoveringOverSprite(hoverSprite);
     }
+    private void dwellHover() {
+        Sprite prevHover = hoverSprite;
+        if (searchingSprite)
+            return;
+        searchingSprite = true;
+        try { hoverSprite = spriteAt(lastMouseX, lastMouseY, lastDwellCtrlDown); }
+        finally { searchingSprite = false; }
+        if (hoverSprite != prevHover)
+            parent.hoveringOverSprite(hoverSprite);
+    }
     @Override
     public void mouseClicked(MouseEvent e)     {}
     @Override
@@ -1490,8 +1510,8 @@ public class GalaxyMapPanel extends BasePanel implements IMapOptions, ActionList
         int clicks = e.getClickCount();
         boolean rightClick = SwingUtilities.isRightMouseButton(e);
         boolean middleClick = SwingUtilities.isMiddleMouseButton(e);
-        // in click-only mode, always detect sprite at click position
-        if (UserPreferences.sensitivityClickOnly())
+        // in click-only/dwell mode, detect sprite at click position
+        if (UserPreferences.sensitivityClickOnly() || UserPreferences.sensitivityDwell())
             hoverSprite = spriteAt(e.getX(), e.getY(), e.isControlDown());
         Sprite newSelection = hoverSprite;
 
