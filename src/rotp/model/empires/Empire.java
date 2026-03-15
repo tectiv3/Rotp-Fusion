@@ -200,6 +200,9 @@ public final class Empire extends Species implements NamedObject {
     private transient BufferedImage shipImageHuge;
     private transient BufferedImage scoutImage;
     private transient BufferedImage transportImage;
+    private transient HashMap<Integer, BufferedImage> missionShipImageCache;
+    private transient HashMap<Integer, BufferedImage> missionShipImageLargeCache;
+    private transient HashMap<Integer, BufferedImage> missionShipImageHugeCache;
     private transient Color nameColor;
     private transient Color ownershipColor;
     private transient Color selectionColor;
@@ -418,6 +421,9 @@ public final class Empire extends Species implements NamedObject {
         shipImageHuge = null;
         scoutImage = null;
         transportImage = null;
+        missionShipImageCache = null;
+        missionShipImageLargeCache = null;
+        missionShipImageHugeCache = null;
     }
     public boolean canSeeShips(int empId) {
     	if (isMonster(empId))
@@ -456,6 +462,69 @@ public final class Empire extends Species implements NamedObject {
         if (transportImage == null)
             transportImage = ShipLibrary.current().transportImage(shipColorId());
         return transportImage;
+    }
+    public BufferedImage missionShipImage(int mission, int outlineColorId) {
+        if (missionShipImageCache == null)
+            missionShipImageCache = new HashMap<>();
+        int colorId = shipColorId();
+        int cacheKey = mission * 1000 + colorId * 100 + outlineColorId;
+        BufferedImage cached = missionShipImageCache.get(cacheKey);
+        if (cached == null) {
+            java.awt.Color outlineColor = (outlineColorId > 0) ? rotp.util.ImageColorizer.color(outlineColorId) : Color.black;
+            ShipLibrary lib = ShipLibrary.current();
+            switch (mission) {
+                case ShipDesign.COLONY:    cached = lib.colonyShipImage(colorId, outlineColor); break;
+                case ShipDesign.SCOUT:     cached = lib.scoutShipImage(colorId, outlineColor); break;
+                case ShipDesign.BOMBER:    cached = lib.bomberShipImage(colorId, outlineColor); break;
+                case ShipDesign.FIGHTER:   cached = lib.fighterShipImage(colorId, outlineColor); break;
+                case ShipDesign.DESTROYER: cached = lib.destroyerShipImage(colorId, outlineColor); break;
+                default:                   return shipImage();
+            }
+            missionShipImageCache.put(cacheKey, cached);
+        }
+        return cached;
+    }
+    public BufferedImage missionShipImageLarge(int mission, int outlineColorId) {
+        if (missionShipImageLargeCache == null)
+            missionShipImageLargeCache = new HashMap<>();
+        int colorId = shipColorId();
+        int cacheKey = mission * 1000 + colorId * 100 + outlineColorId;
+        BufferedImage cached = missionShipImageLargeCache.get(cacheKey);
+        if (cached == null) {
+            java.awt.Color outlineColor = (outlineColorId > 0) ? rotp.util.ImageColorizer.color(outlineColorId) : Color.black;
+            ShipLibrary lib = ShipLibrary.current();
+            switch (mission) {
+                case ShipDesign.COLONY:    cached = lib.colonyShipImageLarge(colorId, outlineColor); break;
+                case ShipDesign.SCOUT:     cached = lib.scoutShipImageLarge(colorId, outlineColor); break;
+                case ShipDesign.BOMBER:    cached = lib.bomberShipImageLarge(colorId, outlineColor); break;
+                case ShipDesign.FIGHTER:   cached = lib.fighterShipImageLarge(colorId, outlineColor); break;
+                case ShipDesign.DESTROYER: cached = lib.destroyerShipImageLarge(colorId, outlineColor); break;
+                default:                   return shipImageLarge();
+            }
+            missionShipImageLargeCache.put(cacheKey, cached);
+        }
+        return cached;
+    }
+    public BufferedImage missionShipImageHuge(int mission, int outlineColorId) {
+        if (missionShipImageHugeCache == null)
+            missionShipImageHugeCache = new HashMap<>();
+        int colorId = shipColorId();
+        int cacheKey = mission * 1000 + colorId * 100 + outlineColorId;
+        BufferedImage cached = missionShipImageHugeCache.get(cacheKey);
+        if (cached == null) {
+            java.awt.Color outlineColor = (outlineColorId > 0) ? rotp.util.ImageColorizer.color(outlineColorId) : Color.black;
+            ShipLibrary lib = ShipLibrary.current();
+            switch (mission) {
+                case ShipDesign.COLONY:    cached = lib.colonyShipImageHuge(colorId, outlineColor); break;
+                case ShipDesign.SCOUT:     cached = lib.scoutShipImageHuge(colorId, outlineColor); break;
+                case ShipDesign.BOMBER:    cached = lib.bomberShipImageHuge(colorId, outlineColor); break;
+                case ShipDesign.FIGHTER:   cached = lib.fighterShipImageHuge(colorId, outlineColor); break;
+                case ShipDesign.DESTROYER: cached = lib.destroyerShipImageHuge(colorId, outlineColor); break;
+                default:                   return shipImageHuge();
+            }
+            missionShipImageHugeCache.put(cacheKey, cached);
+        }
+        return cached;
     }
     public Color nameColor() {
         if (nameColor == null) {

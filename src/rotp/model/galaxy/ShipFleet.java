@@ -785,6 +785,38 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
         }
         return newestDesign;
     }
+    public int dominantMission() {
+        int mission = -1;
+        for (int i = 0; i < MAX_DESIGNS; i++) {
+            if (num(i) > 0) {
+                ShipDesign des = design(i);
+                if (des != null) {
+                    int m = des.inferredMission();
+                    if (mission == -1)
+                        mission = m;
+                    else if (mission != m)
+                        return -1;
+                }
+            }
+        }
+        return mission;
+    }
+    public int dominantShipColor() {
+        int color = -1;
+        for (int i = 0; i < MAX_DESIGNS; i++) {
+            if (num(i) > 0) {
+                ShipDesign des = design(i);
+                if (des != null) {
+                    int c = des.shipColor();
+                    if (color == -1)
+                        color = c;
+                    else if (color != c)
+                        return -1;
+                }
+            }
+        }
+        return color;
+    }
     public boolean hasColonyShip() {
         for (int i=0;i<MAX_DESIGNS;i++) {
             if (num(i) > 0) {
@@ -1089,18 +1121,31 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
         int x = mapX(map);
         int y = mapY(map);
         BufferedImage img;
+        int mission = dominantMission();
 
-        boolean armed = isPotentiallyArmed(player());    
-        if (armed) {
+        if (mission > 0) {
+            int shipColor = dominantShipColor();
+            int outlineColorId = (shipColor >= 0) ? shipColor : 0;
             if (imgSize == 1)
-                img = empire().shipImage();
+                img = empire().missionShipImage(mission, outlineColorId);
             else if (imgSize == 2)
-                img = empire().shipImageLarge();
+                img = empire().missionShipImageLarge(mission, outlineColorId);
             else
-                img = empire().shipImageHuge();
+                img = empire().missionShipImageHuge(mission, outlineColorId);
         }
-        else
-            img = empire().scoutImage();
+        else {
+            boolean armed = isPotentiallyArmed(player());
+            if (armed) {
+                if (imgSize == 1)
+                    img = empire().shipImage();
+                else if (imgSize == 2)
+                    img = empire().shipImageLarge();
+                else
+                    img = empire().shipImageHuge();
+            }
+            else
+                img = empire().scoutImage();
+        }
 
         int w = img.getWidth();
         int h = img.getHeight();
