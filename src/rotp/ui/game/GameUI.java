@@ -49,7 +49,10 @@ import javax.swing.JFileChooser;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import javax.swing.SwingUtilities;
+
 import rotp.Rotp;
+import rotp.model.empires.Empire;
 import rotp.model.game.GameSession;
 import rotp.model.game.IDebugOptions;
 import rotp.model.game.IGameOptions;
@@ -526,11 +529,13 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		case CTRL:
 		case CTRL_SHIFT:
 	        continueText.displayText(text("GAME_MENU_REPLAY_LAST_TURN"));
+	        newGameText.displayText(text("GAME_MENU_NEW_GAME_SAME_SETTINGS"));
 	        loadGameText.displayText(text("GAME_MENU_LOAD_OPTIONS"));
 	        saveGameText.displayText(text("GAME_MENU_SAVE_OPTIONS"));
 	        break;
 		default:
 	        continueText.displayText(text("GAME_MENU_CONTINUE"));
+	        newGameText.displayText(text("GAME_MENU_NEW_GAME"));
 	        loadGameText.displayText(text("GAME_MENU_LOAD_GAME"));
 	        saveGameText.displayText(text("GAME_MENU_SAVE_GAME"));
 		}
@@ -1031,7 +1036,12 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 		    case KeyEvent.VK_F1: showHotKeys();		return;
             case KeyEvent.VK_ESCAPE:
             case KeyEvent.VK_C:  continueGame();	return;
-            case KeyEvent.VK_N:  newGame();			return;
+            case KeyEvent.VK_N:
+            	if (e.isControlDown())
+            		newGameSameSettings();
+            	else
+            		newGame();
+            	return;
             case KeyEvent.VK_L:
             	if (e.isControlDown())
             		loadOptions();
@@ -1203,6 +1213,21 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
 			ErrorUI.inSetupMode();
         }
     }
+    private void newGameSameSettings() {
+        if (!canContinue())
+            return;
+        buttonClick();
+        IGameOptions opts = session().options();
+        Empire.resetPlayerId();
+        gameName = generateGameName(opts);
+        UserPreferences.setForNewGame();
+        final Runnable start = () -> {
+            GameSession.instance().startGame(opts);
+            RotPUI.instance().mainUI().checkMapInitialized();
+            RotPUI.instance().selectIntroPanel();
+        };
+        SwingUtilities.invokeLater(start);
+    }
     private void loadGame() { // BR:
         if (canLoadGame()) {
             buttonClick();
@@ -1278,7 +1303,10 @@ public class GameUI  extends BasePanel implements MouseListener, MouseMotionList
         	else
         		continueGame();
         else if (newGameText.contains(x,y))
-            newGame();
+        	if (e.isControlDown())
+        		newGameSameSettings();
+        	else
+        		newGame();
         else if (loadGameText.contains(x,y))
         	if (e.isControlDown())
         		loadOptions();

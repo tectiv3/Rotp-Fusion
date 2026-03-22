@@ -299,6 +299,31 @@ public class ColonyDefense extends ColonySpendingCategory {
         float researchBC = reserveBC * researchFactor;
         return new float[] {reserveBC, researchBC};
     }
+    public String progressText() {
+        if (colony().allocation(categoryType()) == 0)
+            return null;
+        // shield progress
+        if (!shieldAtMaxLevel()) {
+            float accum = shield * 100;
+            float cost = maxShieldLevel() * 100;
+            if (accum > 0)
+                return String.format("%.1f / %.1f", accum, cost);
+            return null;
+        }
+        // base upgrade progress
+        if (missileBase != tech().bestMissileBase() && baseUpgradeBC > 0) {
+            float cost = missileUpgradeCost();
+            if (cost > 0)
+                return String.format("%.1f / %.1f", baseUpgradeBC, cost);
+        }
+        // new base progress: fractional bases * base cost
+        float frac = bases - (int) bases;
+        if (frac > 0 && bases < maxBases()) {
+            float baseCost = tech().bestMissileBase().cost(empire());
+            return String.format("%.1f / %.1f", frac * baseCost, baseCost);
+        }
+        return null;
+    }
     @Override
     public String upcomingResult() {
         if (colony().allocation(categoryType()) == 0)

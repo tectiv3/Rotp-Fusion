@@ -1086,7 +1086,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 
         // if fleet is unarmed and map is not showing unarmed, then
         // don't draw unless we are clicking on this fleet
-        boolean armed = isPotentiallyArmed(player());    
+        boolean armed = isPotentiallyArmed(player());
         if (!armed && !map.showUnarmedShips() && !clickingOnThisFleet)
             return false;
 
