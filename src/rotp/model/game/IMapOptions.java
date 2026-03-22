@@ -46,12 +46,12 @@ public interface IMapOptions extends IBaseOptsTools {
 	ParamList shipDisplay	= new ParamList (MOD_UI, "SHIP_DISPLAY", "All")
 			.showFullGuide(true)
 			.put("All",		 MOD_UI + "SHOW_ALL_SHIPS")
-			.put("NoUnarmed", MOD_UI + "SHOW_NO_UNARMED_SHIPS")
+			.put("Ships",	 MOD_UI + "SHOW_SHIPS_ONLY")
 			.put("Armed",	 MOD_UI + "SHOW_ONLY_ARMED_SHIPS");
 	default void resetShipDisplay()					{ shipDisplay.set("All");}
 	default void toggleShipDisplay(boolean reverse)	{ shipDisplay.toggle(reverse);}
-	default boolean showFriendlyTransports()		{ return !shipDisplay.get().equals("Armed"); }
-	default boolean showUnarmedShips()				{ return shipDisplay.get().equals("All"); }
+	default boolean showFriendlyTransports()		{ return shipDisplay.get().equals("All"); }
+	default boolean showUnarmedShips()				{ return !shipDisplay.get().equals("Armed"); }
 
 	ParamList showShipRanges	= new ParamList (MOD_UI, "SHOW_SHIP_RANGES", "SR")
 			.showFullGuide(true)

@@ -134,7 +134,7 @@ public class FlightPathSprite extends MapSprite {
     private Color fleetDesignColor() {
         if (ship instanceof ShipFleet) {
             ShipDesign des = ((ShipFleet) ship).slowestDesign();
-            if (des != null)
+            if (des != null && des.shipColor() > 0)
                 return ImageColorizer.color(des.shipColor());
         }
         return Color.green;

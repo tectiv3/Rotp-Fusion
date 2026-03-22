@@ -439,6 +439,17 @@ public class ColonyShipyard extends ColonySpendingCategory {
         float researchBC = reserveBC * researchFactor;
         return new float[] {reserveBC, researchBC};
     }
+    public String progressText() {
+        if (colony().allocation(categoryType()) == 0)
+            return null;
+        float accum = buildingStargate ? stargateBC : shipBC;
+        if (design != prevDesign)
+            accum = 0;
+        float cost = design.cost();
+        if (cost <= 0 || accum <= 0)
+            return null;
+        return String.format("%.1f / %.1f", accum, cost);
+    }
     @Override
     public String upcomingResult() {
         if (colony().allocation(categoryType()) == 0)

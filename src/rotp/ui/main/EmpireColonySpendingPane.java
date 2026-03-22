@@ -565,6 +565,30 @@ public class EmpireColonySpendingPane extends BasePanel {
                 
             g.fill(fillRect);
 
+            if (category == Colony.SHIP) {
+                String prog = colony.shipyard().progressText();
+                if (prog != null) {
+                    g.setColor(Color.LIGHT_GRAY);
+                    int fontSize = scaledFont(g, prog, boxW-s5, 14, 10);
+                    int yOff = scaled(4 + (14-fontSize)/2);
+                    int sw1 = g.getFontMetrics().stringWidth(prog);
+                    int x1 = (boxW-sw1)/2;
+                    drawString(g, prog, boxL+x1, boxTopY+boxH-yOff);
+                }
+            }
+
+            if (category == Colony.DEFENSE) {
+                String prog = colony.defense().progressText();
+                if (prog != null) {
+                    g.setColor(Color.LIGHT_GRAY);
+                    int fontSize = scaledFont(g, prog, boxW-s5, 14, 10);
+                    int yOff = scaled(4 + (14-fontSize)/2);
+                    int sw1 = g.getFontMetrics().stringWidth(prog);
+                    int x1 = (boxW-sw1)/2;
+                    drawString(g, prog, boxL+x1, boxTopY+boxH-yOff);
+                }
+            }
+
             if (category == Colony.INDUSTRY)  {
             	ColonyIndustry industry = colony.industry();
             	Float[] factoryBalance = industry.factoryBalance();

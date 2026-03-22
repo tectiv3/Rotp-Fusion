@@ -462,6 +462,7 @@ GAME_TITLE_LINE_3                 | PRECURSORS
 GAME_DISCUSS_ONLINE               | Discuss Online
 GAME_MENU_CONTINUE                | Continue Game
 GAME_MENU_NEW_GAME                | New Game
+GAME_MENU_NEW_GAME_SAME_SETTINGS  | Replay Settings
 GAME_MENU_LOAD_GAME               | Load Game
 GAME_MENU_LOAD_OPTIONS            | Load Options
 GAME_MENU_SAVE_GAME               | Save Game
@@ -3367,14 +3368,14 @@ SETTINGS_MOD_SHOW_SYSTEM_DATA_HELP       | Show the star system name above the c
 SETTINGS_MOD_SHIP_DISPLAY_DESC           | Which moving ships should be displayed? (Related to the icon button on the left of the Galaxy)
 SETTINGS_MOD_SHIP_DISPLAY                | Ship Display: %1
 SETTINGS_MOD_SHOW_ALL_SHIPS              | All
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS 	     | Transport
+SETTINGS_MOD_SHOW_SHIPS_ONLY             | Ships
 SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS       | Armed
-SETTINGS_MOD_SHOW_ALL_SHIPS_EXT          | Every moving things
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_EXT   | Transports and armed ships
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_EXT   | Only displays warships
-SETTINGS_MOD_SHOW_ALL_SHIPS_HELP         | Show me every moving things.
-SETTINGS_MOD_SHOW_NO_UNARMED_SHIPS_HELP  | Show transports and armed ships, hide unarmed ships.
-SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_HELP  | Show only War ships, hide transports and unarmed ships.
+SETTINGS_MOD_SHOW_ALL_SHIPS_EXT          | All ships and transports
+SETTINGS_MOD_SHOW_SHIPS_ONLY_EXT         | All ships, no transports
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_EXT   | Armed ships only
+SETTINGS_MOD_SHOW_ALL_SHIPS_HELP         | Show all ships and transports.
+SETTINGS_MOD_SHOW_SHIPS_ONLY_HELP        | Show all ships, hide transports.
+SETTINGS_MOD_SHOW_ONLY_ARMED_SHIPS_HELP  | Show only armed ships, hide transports and unarmed ships.
 
 SETTINGS_MOD_SHOW_SHIP_RANGES_DESC       | Which ships should be displayed near the star systems? (Related to the icon button on the left of the Galaxy)
 SETTINGS_MOD_SHOW_SHIP_RANGES            | Starry bg & Areas: %1

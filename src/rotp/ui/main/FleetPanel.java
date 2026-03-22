@@ -873,7 +873,7 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
             super.paintComponent(g0);
             int w = getWidth();
             int h = getHeight();
-            int h1 = s90 + s16;
+            int h1 = s90 + s16 + s16;
 
             Empire pl = player();
             ShipFleet origFleet = parent.fleetToDisplay();
@@ -1098,6 +1098,37 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
 //                    y0 += lineH;
 //                }
 //            }
+
+            // draw fleet composition by hull size
+            {
+                int sm = 0, md = 0, lg = 0, hu = 0;
+                for (int i = 0; i < ShipDesignLab.MAX_DESIGNS; i++) {
+                    int n = displayFl.num(i);
+                    if (n > 0) {
+                        ShipDesign d = displayFl.design(i);
+                        if (d != null) {
+                            switch (d.size()) {
+                                case ShipDesign.SMALL:  sm += n; break;
+                                case ShipDesign.MEDIUM: md += n; break;
+                                case ShipDesign.LARGE:  lg += n; break;
+                                case ShipDesign.HUGE:   hu += n; break;
+                            }
+                        }
+                    }
+                }
+                StringBuilder sb = new StringBuilder();
+                if (sm > 0) sb.append("S:").append(sm).append(" ");
+                if (md > 0) sb.append("M:").append(md).append(" ");
+                if (lg > 0) sb.append("L:").append(lg).append(" ");
+                if (hu > 0) sb.append("H:").append(hu);
+                String compText = sb.toString().trim();
+                if (!compText.isEmpty()) {
+                    g.setColor(SystemPanel.blackText);
+                    scaledFont(g, compText, w - s30, 16, 10);
+                    drawString(g, compText, x0, y0);
+                    y0 += lineH;
+                }
+            }
 
             if (rallyText != null) {
                 y0 += lineH/2;
