@@ -884,9 +884,14 @@ public class AIDiplomat implements Base, Diplomat {
     public DiplomaticReply refuseOfferJointWar(Empire requestor, Empire target) {
         EmpireView v = empire.viewForEmpire(requestor);
         v.embassy().resetJointWarTimer();
-        
-        if (empire.alliedWith(requestor.id) && requestor.atWarWith(target.id)) 
-            return requestor.diplomatAI().receiveBreakAlliance(empire);        
+
+        if (empire.alliedWith(requestor.id) && requestor.atWarWith(target.id)) {
+            EmpireView rv = requestor.viewForEmpire(empire);
+            rv.embassy().noteRequest();
+            DiplomaticIncident inc = rv.embassy().breakAlliance();
+            rv.otherView().embassy().withdrawAmbassador();
+            return rv.otherView().accept(DialogueManager.RESPOND_BREAK_ALLIANCE, inc);
+        }
         return null;
     }
     //-----------------------------------
