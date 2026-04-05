@@ -540,12 +540,14 @@ public final class DiplomaticEmbassy implements Base, Serializable {
 
         boolean finalWar = galaxy().council().finalWar();
         // if oath broken, then create that incident as well
+        // when a requestor forced this war, they bear the diplomatic blame
+        Empire breaker = (requestor != null) ? requestor : owner();
         switch(oathBreakType) {
             case 1:
                 if (!finalWar)
-                    GNNAllianceBrokenNotice.create(owner(), empire());
-                OathBreakerIncident.alertBrokenAlliance(owner(),empire(),requestor,false); break;
-            case 2: OathBreakerIncident.alertBrokenPact(owner(),empire(),requestor,false); break;
+                    GNNAllianceBrokenNotice.create(breaker, empire());
+                OathBreakerIncident.alertBrokenAlliance(breaker,empire(),requestor,false); break;
+            case 2: OathBreakerIncident.alertBrokenPact(breaker,empire(),requestor,false); break;
         }
 
         // if the player is one of our allies, let him know
