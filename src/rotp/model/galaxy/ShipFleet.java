@@ -16,6 +16,7 @@
 package rotp.model.galaxy;
 
 import static rotp.model.ships.ShipDesignLab.MAX_DESIGNS;
+import static rotp.model.tech.Tech.miniFastRate;
 
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -33,6 +34,7 @@ import rotp.model.combat.CombatStackColony;
 import rotp.model.combat.CombatStackShip;
 import rotp.model.combat.ShipCombatManager;
 import rotp.model.empires.Empire;
+import rotp.model.empires.EmpireView;
 import rotp.model.empires.ShipView;
 import rotp.model.ships.ShipDesign;
 import rotp.ui.ScaledInteger;
@@ -387,6 +389,70 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
             int cnt = entry.getValue();
             return cnt * viewingEmpire.estimatedShipFirepowerAntiShip(design, shieldLevel);
         }).reduce(0f, (Float a, Float b) -> a + b); // this .reduce() is literally just .sum() for floats
+    }
+    public float fleetPowerLevel(int viewingEmpireId) {
+        return fleetPowerResult(viewingEmpireId, false);
+    }
+    public boolean fleetPowerIsEstimate(int viewingEmpireId) {
+        return fleetPowerResult(viewingEmpireId, true) > 0;
+    }
+    private float fleetPowerResult(int viewingEmpireId, boolean returnEstimateFlag) {
+        boolean isOwnFleet = empId() == viewingEmpireId;
+        Empire viewer = galaxy().empire(viewingEmpireId);
+        Empire fleetOwner = empire();
+        int[] visible = visibleShips(viewingEmpireId);
+        float fastestWarp = fleetOwner.shipLab().fastestEngine().warp();
+        boolean isEstimate = false;
+        float power = 0;
+
+        for (int i = 0; i < MAX_DESIGNS; i++) {
+            if (visible[i] <= 0)
+                continue;
+            ShipDesign d = design(i);
+            if (d == null || !d.isArmed() || d.isColonyShip())
+                continue;
+
+            float keepScore;
+            float hullPts;
+
+            if (isOwnFleet) {
+                keepScore = (1 - d.availableSpace() / d.totalSpace())
+                        * (float) d.engine().warp() / fastestWarp;
+                hullPts = d.hullPoints();
+            } else {
+                ShipView sv = viewer.shipViewFor(d);
+                if (sv != null && sv.scanned()) {
+                    keepScore = (1 - d.availableSpace() / d.totalSpace())
+                            * (float) d.engine().warp() / fastestWarp;
+                    hullPts = d.hullPoints();
+                } else {
+                    // Unscanned: assume 75% space utilization, use hull points from size
+                    keepScore = 0.75f * (float) d.engine().warp() / fastestWarp;
+                    hullPts = ShipDesign.hullPoints(d.size());
+                    isEstimate = true;
+                }
+            }
+
+            keepScore *= keepScore;
+            power += visible[i] * hullPts * keepScore;
+        }
+
+        if (returnEstimateFlag)
+            return isEstimate ? 1.0f : 0.0f;
+
+        // Apply tech multiplier if we have tech intelligence
+        if (isOwnFleet) {
+            float techLvl = (float) Math.pow(1 / miniFastRate, fleetOwner.tech().avgTechLevel());
+            power *= techLvl;
+        } else {
+            EmpireView ev = viewer.viewForEmpire(fleetOwner);
+            if (ev != null && ev.embassy().contact()) {
+                float techLvl = (float) Math.pow(1 / miniFastRate, ev.spies().tech().avgTechLevel());
+                power *= techLvl;
+            }
+        }
+
+        return power;
     }
     boolean aggressiveWith(ShipFleet fl, StarSystem sys) {
         // only possibly aggressive if one of the fleets is armed

@@ -2140,7 +2140,7 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
             g.drawRoundRect(x,y,w,h,cnr,cnr);
             g.setStroke(prev);
 
-            g.setFont(narrowFont(14));
+            scaledFont(g, text, w-s8, 14, 10);
             int sw = g.getFontMetrics().stringWidth(text);
             int x1 = x+((w-sw)/2);
             int y1 = y+h-s8;

@@ -1259,6 +1259,18 @@ public final class FleetPanel extends BasePanel implements MapSpriteViewer {
                     y0 += s14;
                 }
             }
+
+            // Draw fleet power rating
+            float power = origFl.fleetPowerLevel(player().id);
+            if (power > 0) {
+                boolean isEstimate = origFl.fleetPowerIsEstimate(player().id);
+                String powerStr = isEstimate ? "~" : "";
+                powerStr += String.format("%,.0f", power);
+                g.setFont(narrowFont(14));
+                g.setColor(Color.lightGray);
+                int sw = g.getFontMetrics().stringWidth(powerStr);
+                drawString(g, powerStr, x + w - sw - s10, y + h - s5);
+            }
         }
         private void drawShip(Graphics2D g, ShipFleet origFl, ShipFleet displayFl, boolean canAdjust, boolean contact, int i, int x0, int y0, int w, int h) {
 			// modnar: draw ship design icons in "Fleet Deployment" panel on main map screen
