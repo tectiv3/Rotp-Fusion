@@ -2315,10 +2315,20 @@ public class ShipBattleUI extends FadeInPanel implements MouseListener, MouseMot
         String label()   {
             CombatStack current = mgr.currentStack();
             int shots = current.shotsRemaining(index);
+            String base;
             if (shots < 2 )
-                return text("SHIP_COMBAT_ACTION_WPN_COUNT", current.wpnName(index), str(current.wpnCount(index)));
+                base = text("SHIP_COMBAT_ACTION_WPN_COUNT", current.wpnName(index), str(current.wpnCount(index)));
             else
-                return text("SHIP_COMBAT_ACTION_WPN_COUNT_SHOTS", current.wpnName(index), str(current.wpnCount(index)), str(shots));
+                base = text("SHIP_COMBAT_ACTION_WPN_COUNT_SHOTS", current.wpnName(index), str(current.wpnCount(index)), str(shots));
+
+            if (ship != null && current instanceof CombatStackShip) {
+                CombatStackShip css = (CombatStackShip) current;
+                float dmg = css.estimatedDamageForWeapon(index, ship);
+                int hitPct = (int) (css.weaponHitPct(index, ship) * 100);
+                if (dmg > 0)
+                    base += " ~" + (int) dmg + "dmg " + hitPct + "%";
+            }
+            return base;
         }
         @Override
         String hoverLabel()   {

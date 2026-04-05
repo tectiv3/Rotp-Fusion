@@ -335,13 +335,18 @@ public class MapOverlayEspionageMission extends MapOverlay implements IVIPListen
         g.setPaint(MainUI.darkShadowC);
         g.fillRect(x+bdr, y+bdr, w, h);
 
+        // player's current tech level in this category
+        int playerLevel = (int) player().tech().category(catNum).techLevel();
+
         String techDesc;
-        if (techList.isEmpty()) 
+        if (techList.isEmpty())
             techDesc = text("NOTICE_ESPIONAGE_NO_TECH");
-        else if (techList.size() > 1) 
+        else if (techList.size() > 1)
             techDesc = text("NOTICE_ESPIONAGE_MANY_TECHS", str(techList.size()));
-        else
-            techDesc = tech(techList.get(0)).name();
+        else {
+            Tech t = tech(techList.get(0));
+            techDesc = t.name() + " (L" + t.level + ")";
+        }
 
         // draw button background gradient
         if (techList.isEmpty())
@@ -361,7 +366,9 @@ public class MapOverlayEspionageMission extends MapOverlay implements IVIPListen
         g.setFont(narrowFont(20));
         String s = text(TechCategory.id(catNum));
         if (canSelect(catNum))
-            s = concat(str(catNum+1), " - ", s);
+            s = concat(str(catNum+1), " - ", s, " (L", str(playerLevel), ")");
+        else
+            s = concat(s, " (L", str(playerLevel), ")");
         int sw = g.getFontMetrics().stringWidth(s);
         int xc = x+(w-sw)/2;
         Color c0;
@@ -386,7 +393,8 @@ public class MapOverlayEspionageMission extends MapOverlay implements IVIPListen
             for (String tId: techList) {
                 Tech t = tech(tId);
                 y1 += lineH;
-                drawShadowedString(g, t.name(), 1, x+BasePanel.s10, y1, MainUI.darkShadowC, c0);
+                String techEntry = t.name() + " (L" + t.level + ")";
+                drawShadowedString(g, techEntry, 1, x+BasePanel.s10, y1, MainUI.darkShadowC, c0);
             }
         }  
     }

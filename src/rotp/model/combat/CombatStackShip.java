@@ -535,6 +535,27 @@ public class CombatStackShip extends CombatStack {
         }
         return false;
     }
+    public float weaponHitPct(int weaponIndex, CombatStack target) {
+        if (weaponIndex < 0 || weaponIndex >= weapons.size())
+            return 0;
+        ShipComponent comp = weapons.get(weaponIndex);
+        float hitPct = 1.0f;
+        if (comp.isBeamWeapon())
+            hitPct = (5 + attackLevel - target.beamDefense()) / 10;
+        if (comp.isMissileWeapon())
+            hitPct = (5 + attackLevel - target.missileDefense()) / 10;
+        return max(.05f, min(hitPct, 1.0f));
+    }
+    public float estimatedDamageForWeapon(int weaponIndex, CombatStack target) {
+        if (weaponIndex < 0 || weaponIndex >= weapons.size())
+            return 0;
+        ShipComponent comp = weapons.get(weaponIndex);
+        if (comp.isLimitedShotWeapon() && roundsRemaining[weaponIndex] <= 0)
+            return 0;
+        float hitPct = weaponHitPct(weaponIndex, target);
+        // estimatedKills returns damage/maxStackHits, so multiply back to get raw damage
+        return hitPct * comp.estimatedKills(this, target, weaponCount[weaponIndex] * num) * target.maxStackHits();
+    }
     @Override
     public float estimatedKills(CombatStack target, boolean ignoreMissiles) {
         float kills = 0;
