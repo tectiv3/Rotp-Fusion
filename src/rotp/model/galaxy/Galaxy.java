@@ -431,10 +431,31 @@ public final class Galaxy implements Base, Serializable {
             Empire home = sys.empire();
             List<ShipFleet> fleets = sys.orbitingFleetsNoMonster();
             if ((home == null) && !fleets.isEmpty() && !sys.hasMonster()){
-                for (ShipFleet fl: fleets) 
+                // At an unoccupied planet, rank fleets that will claim
+                // synchronously (AI, or player with auto-colonize and no
+                // plague) by earliest original launch time — whoever sent
+                // the colony ship first wins. Fleets that would only queue
+                // a deferred notification keep their original iteration
+                // order after the auto-claimers (stable sort).
+                fleets.sort((a, b) -> {
+                    boolean aAuto = willAutoClaimColony(a, sys);
+                    boolean bAuto = willAutoClaimColony(b, sys);
+                    if (aAuto != bAuto)
+                        return aAuto ? -1 : 1;
+                    if (!aAuto)
+                        return 0;
+                    return Float.compare(a.lastLaunchTime(), b.lastLaunchTime());
+                });
+                for (ShipFleet fl: fleets)
                     fl.checkColonize();
             }
         }
+    }
+    private boolean willAutoClaimColony(ShipFleet fl, StarSystem sys) {
+        Empire e = fl.empire();
+        if (e.isAIControlled())
+            return true;
+        return options().autoColonize() && !sys.hasPlague();
     }
     public void assessTurn() {
         NoticeMessage.resetSubstatus(text("TURN_RESEARCH"));

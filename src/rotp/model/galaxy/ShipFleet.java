@@ -56,6 +56,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 	private boolean retreating = false;
 	private float fromX, fromY, destX, destY;
 	private float launchTime = NOT_LAUNCHED;
+	private float lastLaunchTime = NOT_LAUNCHED;
 
 	private transient FleetOrders orders;
 	private transient FlightPathSprite pathSprite;
@@ -76,6 +77,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 		destY(f.destY());
 		status(f.status());
 		launchTime(f.launchTime());
+		lastLaunchTime = f.lastLaunchTime();
 		isCopy = true;
 		reloadBombs();
 	}
@@ -127,6 +129,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 	private void destY(float f)			{ destY = f; }
 	@Override public float launchTime()	{ return launchTime; }
 	private void launchTime(float f)	{ launchTime = f; }
+	public float lastLaunchTime()		{ return lastLaunchTime; }
 
 	// =========================================================
 	// Other methods
@@ -281,6 +284,8 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
 		
 		destSysId(StarSystem.NULL_ID);
 		rallySysId(StarSystem.NULL_ID);
+		if (launchTime > NOT_LAUNCHED)
+			lastLaunchTime = launchTime;
 		launchTime(NOT_LAUNCHED);
 		makeOrbiting();
 		if (scan)
@@ -920,6 +925,7 @@ public class ShipFleet extends FleetBase implements ScaledInteger {
     		return false;
         for (int id=0; id<MAX_DESIGNS; id++)
         	addShips(id, fl.num(id));
+        lastLaunchTime = min(lastLaunchTime, fl.lastLaunchTime());
         return true;
     }
     public void addShips(int id, int n)		{ num(id, max(0, num(id) + n)); }
